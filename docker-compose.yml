@@ -1,0 +1,396 @@
+services:
+  redis-node1:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-1.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node1
+    hostname: redis-node1
+    ports:
+      - "6379:6379"
+  
+  redis-node2:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-2.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node2
+    hostname: redis-node2
+    ports:
+      - "6380:6379"
+    
+  redis-node3:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-3.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node3
+    hostname: redis-node3
+    ports:
+      - "6381:6379"
+  
+  redis-node4:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-4.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node4
+    hostname: redis-node4
+    ports:
+      - "6382:6379"
+  
+  redis-node5:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-5.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node5
+    hostname: redis-node5
+    ports:
+      - "6383:6379"
+
+  redis-node6:
+    image: redis:latest
+    command: redis-server --bind 0.0.0.0 --cluster-enabled yes --cluster-config-file nodes-node-6.conf --cluster-node-timeout 5000  --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    environment:
+      - NODE_ID=node6
+    hostname: redis-node6
+    ports:
+      - "6384:6379"
+
+  cockroachdb1:
+    image: cockroachdb/cockroach:v24.1.0
+    command: start --insecure --join=cockroachdb1,cockroachdb2,cockroachdb3
+    hostname: cockroachdb1
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    volumes:
+      - cockroach-data1:/cockroach/cockroach-data
+    networks:
+      - app-network
+
+  cockroachdb2:
+    image: cockroachdb/cockroach:v24.1.0
+    command: start --insecure --join=cockroachdb1,cockroachdb2,cockroachdb3
+    hostname: cockroachdb2
+    ports:
+      - "26258:26257"
+      - "8081:8080"
+    volumes:
+      - cockroach-data2:/cockroach/cockroach-data
+    networks:
+      - app-network
+
+  cockroachdb3:
+    image: cockroachdb/cockroach:v24.1.0
+    command: start --insecure --join=cockroachdb1,cockroachdb2,cockroachdb3
+    hostname: cockroachdb3
+    ports:
+      - "26259:26257"
+      - "8082:8080"
+    volumes:
+      - cockroach-data3:/cockroach/cockroach-data
+    networks:
+      - app-network
+
+  cockroach-init:
+    image: cockroachdb/cockroach:v24.1.0
+    depends_on:
+      - cockroachdb1
+    entrypoint: >
+      /bin/sh -c "
+        echo 'Waiting for cockroachdb1 to be ready...';
+        sleep 10;
+        echo 'Initializing cluster...';
+        cockroach init --insecure --host=cockroachdb1 || echo 'Cluster already initialized';
+        echo 'Creating database and tables...';
+        cockroach sql --insecure --host=cockroachdb1 -e 'CREATE DATABASE IF NOT EXISTS distribuido_db;';
+        cockroach sql --insecure --host=cockroachdb1 -e 'CREATE TABLE IF NOT EXISTS distribuido_db.dictionary (
+            word VARCHAR(255) PRIMARY KEY,
+            definition TEXT NOT NULL,
+            node VARCHAR(50),
+            version VARCHAR(50),
+            timestamp BIGINT,
+            created_at TIMESTAMP DEFAULT now()
+        );';
+        cockroach sql --insecure --host=cockroachdb1 -e 'CREATE INDEX IF NOT EXISTS idx_timestamp ON distribuido_db.dictionary(timestamp);';
+        cockroach sql --insecure --host=cockroachdb1 -e 'ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;';
+        echo 'Database initialization complete.';
+      "
+    networks:
+      - app-network
+
+  php-api:
+    build: ./backend
+    environment:
+      - NODE_ID=php-api
+      - REDIS_NODES=redis-node1:6379,redis-node2:6379,redis-node3:6379,redis-node4:6379,redis-node5:6379,redis-node6:6379
+      - DB_DRIVER=cockroach
+      - DB_HOST=haproxy
+      - DB_PORT=26256
+      - DB_DATABASE=distribuido_db
+      - DB_USER=root
+      - DB_PASSWORD=
+      - RABBITMQ_NODES=haproxy:5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=secret
+    deploy:
+      replicas: 3
+    depends_on:
+      - haproxy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  rabbitmq1:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq1
+    user: "rabbitmq:rabbitmq"
+    networks:
+      - app-network
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=CLUSTER_COOKIE
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=secret
+      - RABBITMQ_CLUSTER_NODES=rabbit@rabbitmq1,rabbit@rabbitmq2,rabbit@rabbitmq3
+      - RABBITMQ_DEFAULT_VHOST=/
+      - RABBITMQ_DEFAULT_QUEUE_ARGS='{"x-queue-type":"quorum"}'
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672},{ip,"0.0.0.0"}] -rabbit tcp_listeners [{"0.0.0.0",5672}]
+    volumes:
+      - rabbitmq1-data:/var/lib/rabbitmq
+      - rabbitmq1-config:/etc/rabbitmq
+    command: 
+      - /bin/bash
+      - -c
+      - |
+        chmod 600 /var/lib/rabbitmq/.erlang.cookie
+        exec docker-entrypoint.sh rabbitmq-server
+    ports:
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq2:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq2
+    user: "rabbitmq:rabbitmq"
+    networks:
+      - app-network
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=CLUSTER_COOKIE
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=secret
+      - RABBITMQ_CLUSTER_NODES=rabbit@rabbitmq1,rabbit@rabbitmq2,rabbit@rabbitmq3
+      - RABBITMQ_DEFAULT_VHOST=/
+      - RABBITMQ_DEFAULT_QUEUE_ARGS='{"x-queue-type":"quorum"}'
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672},{ip,"0.0.0.0"}] -rabbit tcp_listeners [{"0.0.0.0",5672}]
+    volumes:
+      - rabbitmq2-data:/var/lib/rabbitmq
+      - rabbitmq2-config:/etc/rabbitmq
+    command: 
+      - /bin/bash
+      - -c
+      - |
+        chmod 600 /var/lib/rabbitmq/.erlang.cookie
+        exec docker-entrypoint.sh rabbitmq-server
+    ports:
+      - "15673:15672"
+    depends_on:
+      - rabbitmq1
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq3:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq3
+    user: "rabbitmq:rabbitmq"
+    networks:
+      - app-network
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=CLUSTER_COOKIE
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=secret
+      - RABBITMQ_CLUSTER_NODES=rabbit@rabbitmq1,rabbit@rabbitmq2,rabbit@rabbitmq3
+      - RABBITMQ_DEFAULT_VHOST=/
+      - RABBITMQ_DEFAULT_QUEUE_ARGS='{"x-queue-type":"quorum"}'
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management listener [{port,15672},{ip,"0.0.0.0"}] -rabbit tcp_listeners [{"0.0.0.0",5672}]
+    volumes:
+      - rabbitmq3-data:/var/lib/rabbitmq
+      - rabbitmq3-config:/etc/rabbitmq
+    command: 
+      - /bin/bash
+      - -c
+      - |
+        chmod 600 /var/lib/rabbitmq/.erlang.cookie
+        exec docker-entrypoint.sh rabbitmq-server
+    ports:
+      - "15674:15672"
+    depends_on:
+      - rabbitmq1
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  haproxy:
+    image: haproxy:latest
+    ports:
+      - "26256:26256"
+      - "5672:5672"
+      - "8404:8404"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      app-network:
+        aliases:
+          - haproxy
+    healthcheck:
+      test: ["CMD", "haproxy", "-c", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      - cockroach-init
+      - rabbitmq1
+      - rabbitmq2
+      - rabbitmq3
+
+  worker:
+    build: ./backend
+    command: bash -c "sleep 15 && php worker/worker.php"
+    networks:
+      - app-network
+    depends_on:
+      haproxy:
+        condition: service_healthy
+    environment:
+      - REDIS_NODES=redis-node1:6379,redis-node2:6379,redis-node3:6379,redis-node4:6379,redis-node5:6379,redis-node6:6379
+      - RABBITMQ_NODES=haproxy:5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=secret
+      - DB_DRIVER=cockroach
+      - DB_HOST=haproxy
+      - DB_PORT=26256
+      - DB_DATABASE=distribuido_db
+      - DB_USER=root
+      - DB_PASSWORD=
+    deploy:
+      replicas: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - php-api
+    networks:
+      - app-network
+    dns: 8.8.8.8
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nginx-proxy:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php-api
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  k6:
+    image: grafana/k6:latest
+    volumes:
+      - ./testes-carga/scripts:/testes-carga/scripts
+      - ./testes-carga/relatorios:/testes-carga/relatorios
+    depends_on:
+      - php-api
+      - nginx-proxy
+    networks:
+      - app-network
+      
+volumes:
+  redis_data1:
+  redis_data2:
+  redis_data3:
+  redis_data4:
+  redis_data5:
+  redis_data6:
+  cockroach-data1:
+  cockroach-data2:
+  cockroach-data3:
+  rabbitmq1-data:
+  rabbitmq1-config:
+  rabbitmq2-data:
+  rabbitmq2-config:
+  rabbitmq3-data:
+  rabbitmq3-config:
+
+networks:
+  app-network:
+    driver: bridge
+    attachable: true 

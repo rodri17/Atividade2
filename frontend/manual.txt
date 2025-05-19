@@ -1,0 +1,95 @@
+Construir containers:
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+
+Configurar Redis Cluster:
+docker exec -it atividade2-redis-node1-1 redis-cli --cluster create ^
+redis-node1:6379 ^
+redis-node2:6379 ^
+redis-node3:6379 ^
+redis-node4:6379 ^
+redis-node5:6379 ^
+redis-node6:6379 ^
+--cluster-replicas 1 --cluster-yes
+
+Verificar o cluster:
+docker exec -it atividade2-redis-node1-1 redis-cli cluster nodes
+
+Verficiar logs do backend:
+docker logs atividade2-backend-1
+
+Verificar saúde do container:
+docker exec -it atividade2-redis-node1-1 redis-cli --cluster check atividade2-redis-node1-1:6379
+
+Verificar cluster state:
+docker exec -it atividade2-redis-node1-1 redis-cli
+
+Verificar conectividade do cluster:
+docker exec -it atividade2-api-1 sh
+# python -c "from rediscluster import RedisCluster; rc = RedisCluster(startup_nodes=[{'host':'redis-node1','port':6379}], decode_responses=True); print(rc.ping())"
+{'172.18.0.6:6379': True, '172.18.0.5:6379': True, '172.18.0.4:6379': True, '172.18.0.3:6379': True, '172.18.0.2:6379': True, '172.18.0.7:6379': True}
+#
+
+Inspecionar a network:
+docker network inspect atividade2_app-network
+
+Verificar resolução de nomes:
+docker exec atividade2-nginx-proxy-1 cat /etc/resolv.conf
+
+Aceder base de dados dentro do container:
+docker exec -it atividade2-postgres-1 psql -U postgres -d distribuido_db
+
+Executar script no Docker ou WSL:
+chmod +x start.sh
+./start.sh
+
+Executar testes de carga:
+docker-compose run k6 run /testes-carga/scripts/load-test.js
+docker-compose run k6 run /testes-carga/scripts/smoke-test.js
+docker-compose run k6 run /testes-carga/scripts/stress-test.js
+docker-compose run k6 run /testes-carga/scripts/soak-test.js
+
+
+Comando	Finalidade:
+docker-compose up -d	Inicia os containers em segundo plano.
+docker-compose logs -f	Visualiza logs em tempo real (útil para depuração).
+docker-compose down	    Para e remove containers, redes e volumes.
+docker-compose build	Reconstrói imagens após alterações em Dockerfiles.
+docker exec -it <container_id> bash	Acessa o terminal de um container em execução.
+docker-compose restart <service>	Reinicia um serviço específico (ex: backend).
+docker exec -it atividade2-redis-node1-1 redis-cli --cluster nodes	Lista todos os nós e seus papéis.
+docker exec -it atividade2-redis-node1-1 redis-cli GET <key>	Verifica um dado em um nó específico.
+docker-compose logs -f redis-node1	Monitora logs de um nó.
+
+Backend---------------------------------------------------------------
+
+PUT:
+curl -X PUT http://localhost:8000/ -H "Content-Type: application/json" -d "{\"data\": {\"key\": \"exemplo\", \"value\": \"Definição de teste\"}}"
+
+HealthChecks:
+# Frontend
+curl http://localhost:3000/health
+
+# Nginx
+curl http://localhost:8000/health
+
+# PostgreSQL (já configurado)
+curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health
+
+
+
+TO DO -------------------------------------------------------------
+
+Um sistema distribuído com replicação assíncrona, tolerância a falhas e resolução de conflitos simples, alinhado com o CAP Theorem (Availability + Partition Tolerance).
+
+Inclua no README:
+
+Arquitetura com shards e réplicas.
+
+Explicação de consistência eventual e last-write-wins.
+
+Passos para simular falhas e ver recuperação.
+
+Testes de Carga:
+Use locust ou k6 para testar escalabilidade e latência durante falhas.
