@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Documentação da API</title>
+    <title>Manual da API</title>
     <meta charset="utf-8"/>
-    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/redoc@next/bundles/redoc.standalone.css">
   </head>
   <body>
     <div id="redoc-container"></div>
     <script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>
     <script>
-        Redoc.init(
-            './openai.yaml',
-            { 
-            disableSearch: false,
-            theme: { colors: { primary: { main: '#0080ff' } } }
-            },
-            document.getElementById('redoc-container')
-        );
+        Redoc.init('./openapi.yaml', {}, document.getElementById('redoc-container'));
     </script>
   </body>
 </html>
