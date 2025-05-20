@@ -69,6 +69,20 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 
 ---
 
+## 📚 Manual Interativo da API
+
+[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app)
+
+Explore a API completa com testes em tempo real:
+
+- 🧪 **Testar endpoints diretamente no navegador**  
+- 📄 **Visualizar schemas de requisição/resposta**  
+- 📱 **Gerar código para 10+ linguagens automaticamente**
+
+*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app)*
+
+---
+
 ## 📌 Funcionalidades
 
 |      | Componente       | Detalhes                             |
