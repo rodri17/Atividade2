@@ -8,30 +8,30 @@ const TermList = () => {
   const handleGet = async () => {
     try {
       const normalizedKey = key.trim().toLowerCase();
-      const response = await api.get<{ data: { value: string } }>(`/word/${normalizedKey}`);
+      const response = await api.get<{ data: { value: string } }>(`/?key=${normalizedKey}`);
       setResult(response.data.data.value);
     } catch (error) {
-      setResult('Word not found');
+      setResult('Palavra não encontrada.');
     }
   };
 
   return (
     <div className="key-list">
-      <h3>🔍 Search Word</h3>
+      <h3>🔍 Buscar Palavra</h3>
       <div className="search-container">
         <input
-          placeholder="Search for a word..."
+          placeholder="Digite a palavra para buscar..."
           value={key}
           onChange={(e) => setkey(e.target.value)}
           className="search-input"
         />
         <button onClick={handleGet} className="btn-search">
-          Search
+          Buscar
         </button>
       </div>
       {result && (
         <div className="result-box">
-          <span className="result-label">Definition:</span>
+          <span className="result-label">Definição:</span>
           <p className="result-text">{result}</p>
         </div>
       )}

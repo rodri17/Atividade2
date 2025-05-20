@@ -6,7 +6,7 @@ import '../styles/dictionary.css';
 const DictionaryManagementPage = () => {
   return (
     <div className="container">
-      <h1>✨ Distributed Dictionary Manager</h1>
+      <h1>✨ Gestor de Dicionário Distribuído</h1>
       <div className="dashboard">
         <section className="form-section">
           <TermForm />

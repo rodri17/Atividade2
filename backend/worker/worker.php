@@ -42,7 +42,7 @@ try {
     $db = connectCockroach();
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    die("Falha ao conectar à base de dados: " . $e->getMessage());
 }
 
 $callback = function ($msg) use ($db) {
@@ -83,17 +83,16 @@ $callback = function ($msg) use ($db) {
             }
             
             $msg->ack();
-            echo " [✔] Processed: $key\n";
+            echo " [✔] Processado: $key\n";
             
         } catch (Exception $e) {
-            error_log("Processing Error: " . $e->getMessage());
+            error_log("Erro ao processar mensagem: " . $e->getMessage());
             $msg->nack(false);
         }
     } catch (Exception $e) {
-        error_log("Critical Error: " . $e->getMessage());
+        error_log("Erro crítico: " . $e->getMessage());
     }
 };
-
 
 $maxRetries = 5;
 $retryDelay = 10;
@@ -142,7 +141,7 @@ try {
                 $callback
             );
 
-            echo " [*] Connected. Waiting for messages (Attempt: " . ($retry + 1) . ")\n";
+            echo " [*] Conectado. A aguardar mensagens (Tentativa: " . ($retry + 1) . ")\n";
             
             while (count($channel->callbacks)) {
                 $channel->wait();
@@ -150,7 +149,7 @@ try {
             
             break;
         } catch (Exception $e) {
-            error_log("Connection Error: " . $e->getMessage());
+            error_log("Erro de conexão: " . $e->getMessage());
             
             if ($connection) {
                 try { $connection->close(); } catch (Exception $e) {}
@@ -162,11 +161,11 @@ try {
                 continue;
             }
             
-            throw new Exception("Failed after $maxRetries attempts");
+            throw new Exception("Falhou após $maxRetries tentativas");
         }
     }
 } catch (Exception $e) {
-    error_log("Fatal Error: " . $e->getMessage());
+    error_log("Erro fatal: " . $e->getMessage());
     exit(1);
 }
 

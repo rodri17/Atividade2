@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
 import '../../styles/dictionary.css';
-import { data } from 'react-router-dom';
 
 const TermForm = () => {
     const [word, setWord] = useState('');
@@ -12,58 +11,58 @@ const TermForm = () => {
         e.preventDefault();
         try {
             const normalizedKey = word.trim().toLowerCase();
-            await api.put('/word', { 
+            await api.put('/', { 
                 data: {
                     key: normalizedKey,
                     value: definition
                 }
             });
-            setMessage('success: Word and its definition saved successfully!');
+            setMessage('success: Palavra e definição salvas com sucesso!');
             setWord('');
             setDefinition('');
         } catch (error) {
-            setMessage('error: Error saving word definition');
+            setMessage('error: Erro ao salvar a definição da palavra.');
         }
     };
 
     const handleDelete = async () => {
         try {
             const normalizedKey = word.trim().toLowerCase();
-            await api.delete(`/word?key=${normalizedKey}`);
-            setMessage('success: Word deleted successfully!');
+            await api.delete(`/?key=${normalizedKey}`);
+            setMessage('success: Palavra excluída com sucesso!');
             setWord('');
             setDefinition('');
         } catch (error) {
-            setMessage('error: Error deleting word');
+            setMessage('error: Erro ao excluir a palavra.');
         }
     };
 
     return (
         <div className="term-form">
-            <h2>📝 Add/Edit Word</h2>
+            <h2>📝 Adicionar/Editar Palavra</h2>
             <form onSubmit={handleSubmit}>
                 <input
-                    placeholder="Type a word..."
+                    placeholder="Digite uma palavra..."
                     value={word}
                     onChange={(e) => setWord(e.target.value)}
                     required
                 />
                 <textarea
-                    placeholder="Write the definition..."
+                    placeholder="Escreva a definição..."
                     value={definition}
                     onChange={(e) => setDefinition(e.target.value)}
                     rows={4}
                     required
                 />
                 <div className="button-group">
-                    <button type="submit">💾 Save the word</button>
+                    <button type="submit">💾 Salvar palavra</button>
                     <button 
                         type="button"
                         onClick={handleDelete}
                         className="btn-delete"
                         disabled={!word}
                     >
-                        🗑️ Delete word
+                        🗑️ Excluir palavra
                     </button>
                 </div>
                 {message && (

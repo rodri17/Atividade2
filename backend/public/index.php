@@ -8,31 +8,31 @@ class RabbitMQManager {
     public static function getChannel() {
         if (self::$connection === null || !self::$connection->isConnected()) {
             $nodes = explode(',', getenv('RABBITMQ_NODES'));
-            $selectedNode = $nodes[0]; 
+            $selectedNode = $nodes[0];
             list($host, $port) = explode(':', $selectedNode);
-            
+
             self::$connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
-                $host, 
-                $port, 
-                getenv('RABBITMQ_USER'), 
+                $host,
+                $port,
+                getenv('RABBITMQ_USER'),
                 getenv('RABBITMQ_PASS'),
                 '/',
                 false,
                 'AMQPLAIN',
                 null,
                 'en_US',
-                30,  // Timeout de conexão
-                30   // Timeout de leitura/escrita
+                30,
+                30
             );
-            
+
             self::$channel = self::$connection->channel();
             self::$channel->queue_declare(
-                'dictionary_events', 
-                false, 
-                true, 
-                false, 
-                false, 
-                false, 
+                'dictionary_events',
+                false,
+                true,
+                false,
+                false,
+                false,
                 new \PhpAmqpLib\Wire\AMQPTable([
                     'x-queue-type' => 'quorum',
                     'x-delivery-limit' => 3
@@ -50,7 +50,6 @@ class RabbitMQManager {
 
 register_shutdown_function(['RabbitMQManager', 'shutdown']);
 
-// Handle OPTIONS (for CORS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -66,7 +65,7 @@ try {
     $redis = new RedisCluster(null, explode(',', getenv('REDIS_NODES')), 1.5, 1.5, false);
 } catch (Exception $e) {
     http_response_code(500);
-    exit(json_encode(['error' => 'Redis connection failed: ' . $e->getMessage()]));
+    exit(json_encode(['erro' => 'Falha na conexão com o Redis: ' . $e->getMessage()]));
 }
 
 try {
@@ -74,26 +73,31 @@ try {
 } catch (Exception $e) {
     http_response_code(503);
     echo json_encode([
-        'error' => 'Database connection failed',
-        'details' => $e->getMessage()
+        'erro' => 'Falha na conexão com a base de dados',
+        'detalhes' => $e->getMessage()
     ]);
     exit;
 }
 
 $request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path_parts = explode('/', trim($request_path, '/'));
-$endpoint = $path_parts[0] ?? '';
+
+if ($request_path === '/openapi.yaml') {
+    header('Content-Type: text/yaml');
+    readfile(__DIR__ . '/../openapi.yaml');
+    exit;
+}
 
 if ($request_path === '/health') {
     try {
         echo json_encode([
             'status' => 'ok',
-            'cockroachdb' => $db->query('SELECT 1') ? 'ok' : 'unstable',
-            'redis' => $redis->ping() ? 'ok' : 'unstable'
+            'cockroachdb' => $db->query('SELECT 1') ? 'ok' : 'instável',
+            'redis' => $redis->ping() ? 'ok' : 'instável'
         ]);
     } catch (Exception $e) {
         http_response_code(503);
-        echo json_encode(['status' => 'degraded']);
+        echo json_encode(['status' => 'degradado']);
     }
     exit;
 }
@@ -101,10 +105,10 @@ if ($request_path === '/health') {
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'PUT':
         $input = json_decode(file_get_contents('php://input'), true);
-        
+
         if (!$input || !isset($input['data']['key'], $input['data']['value'])) {
             http_response_code(400);
-            echo json_encode(['error' => 'Invalid request format']);
+            echo json_encode(['erro' => 'Formato de requisição inválido']);
             exit;
         }
 
@@ -118,33 +122,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
             ]);
 
             $channel = RabbitMQManager::getChannel();
-            $msg = new \PhpAmqpLib\Message\AMQPMessage(
-                $msgBody, 
-                ['delivery_mode' => \PhpAmqpLib\Message\AMQPMessage::DELIVERY_MODE_PERSISTENT]
+            $msg = new AMQPMessage(
+                $msgBody,
+                ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]
             );
             $channel->basic_publish($msg, '', 'dictionary_events');
-            
-            echo json_encode(['status' => 'success']);
-            
+
+            echo json_encode(['status' => 'sucesso']);
         } catch (Exception $e) {
-            error_log("RabbitMQ Error: " . $e->getMessage());
+            error_log("Erro RabbitMQ: " . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['error' => 'Message publishing failed']);
+            echo json_encode(['erro' => 'Falha ao publicar a mensagem']);
         }
         break;
 
     case 'GET':
-        $key = explode('/', trim($request_path, '/'))[1] ?? '';
+        $key = $_GET['key'] ?? '';
         $value = $redis->get($key);
 
         if ($value) {
             $data = json_decode($value, true);
             echo json_encode(['data' => ['value' => $data['definition']]]);
         } else {
-            $stmt = $pg_read->prepare("SELECT definition FROM dictionary WHERE word = ?");
+            $stmt = $db->prepare("SELECT definition FROM dictionary WHERE word = ?");
             $stmt->execute([$key]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if ($row) {
                 $redis->set($key, json_encode([
                     'definition' => $row['definition'],
@@ -154,7 +157,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode(['data' => ['value' => $row['definition']]]);
             } else {
                 http_response_code(404);
-                echo json_encode(['error' => 'Word not found']);
+                echo json_encode(['erro' => 'Palavra não encontrada']);
             }
         }
         break;
@@ -163,7 +166,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $key = $_GET['key'] ?? '';
         if (empty($key)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Missing key parameter']);
+            echo json_encode(['erro' => 'Parâmetro key ausente']);
             exit;
         }
 
@@ -176,22 +179,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
             ]);
 
             $channel = RabbitMQManager::getChannel();
-            $msg = new \PhpAmqpLib\Message\AMQPMessage(
-                $msgBody, 
-                ['delivery_mode' => \PhpAmqpLib\Message\AMQPMessage::DELIVERY_MODE_PERSISTENT]
+            $msg = new AMQPMessage(
+                $msgBody,
+                ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]
             );
             $channel->basic_publish($msg, '', 'dictionary_events');
-            
-            echo json_encode(['status' => 'success']);
-            
+
+            echo json_encode(['status' => 'sucesso']);
         } catch (Exception $e) {
-            error_log("RabbitMQ Error: " . $e->getMessage());
+            error_log("Erro RabbitMQ: " . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['error' => 'Message publishing failed']);
+            echo json_encode(['erro' => 'Falha ao publicar a mensagem']);
         }
         break;
 
     default:
         http_response_code(405);
-        echo json_encode(['error' => 'Method not allowed']);
+        echo json_encode(['erro' => 'Método não permitido']);
 }

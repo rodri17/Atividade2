@@ -7,7 +7,7 @@ const Header = () => {
       <nav>
         <h1 className="logo">
           <span className="logo-icon">📖</span>
-          Distributed Dictionary
+          Dicionário Distribuído
         </h1>
         <div className="nav-links">
           <a href="/" className="nav-link">Home</a>

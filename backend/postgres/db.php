@@ -24,6 +24,6 @@ function connectCockroach() {
         );
         return $conn;
     } catch (PDOException $e) {
-        throw new Exception("CockroachDB connection failed: " . $e->getMessage());
+        throw new Exception("Conexão com CockroachDB falhou: " . $e->getMessage());
     }
 }

@@ -109,5 +109,5 @@ echo "All services started successfully!"
 echo "CockroachDB: http://localhost:8080"
 echo "RabbitMQ Management: http://localhost:15672 (admin/secret)"
 echo "Haproxy: http://localhost:8404/stats"
-echo "Backend: http://localhost:8000"
+echo "Nginx: http://localhost:8000" only for curls does not have UI
 echo "Frontend: http://localhost:3000"
