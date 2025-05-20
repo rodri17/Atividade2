@@ -54,7 +54,7 @@
 
 ## ✨ Visão Geral
 
-Atividade2 is a powerful developer tool designed to streamline the deployment and management of microservices applications, ensuring high availability and scalability.
+Atividade2 é uma ferramenta poderosa para programadores, concebida para simplificar a implementação e gestão de aplicações baseadas em microserviços, garantindo alta disponibilidade e escalabilidade.
 
 **Porquê usar o Atividade2?**
 
