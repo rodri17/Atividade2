@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Manual da API</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/redoc@next/bundles/redoc.standalone.css">
-  </head>
-  <body>
-    <div id="redoc-container"></div>
-    <script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>
-    <script>
-        Redoc.init('./openapi.yaml', {}, document.getElementById('redoc-container'));
-    </script>
-  </body>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manual da API</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css" />
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-bundle.js"></script>
+  <script>
+    window.onload = () => {
+      SwaggerUIBundle({
+        url: "./openai.yaml",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+        layout: "BaseLayout"
+      });
+    };
+  </script>
+</body>
 </html>
