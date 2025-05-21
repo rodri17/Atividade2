@@ -722,61 +722,99 @@ Explore a API completa com testes em tempo real:
 
 ```mermaid
 graph TD
-    subgraph Cliente
-        A[Utilizador/Navegador]
-        K[Testes k6]
+    subgraph Frontend_Layer
+        A[Frontend (React)] -->|HTTP Requests| B[Nginx]
     end
 
-    subgraph Frontend
-        B[React]
-        B -->|Proxy| C[Nginx]
+    subgraph API_Layer
+        B -->|Load Balance| C[PHP-API 1]
+        B -->|Load Balance| D[PHP-API 2]
+        B -->|Load Balance| E[PHP-API 3]
     end
 
-    subgraph API Layer
-        C --> D[HAProxy]
-        D --> E[PHP-API\n(Réplica 1)]
-        D --> F[PHP-API\n(Réplica 2)]
-        D --> G[PHP-API\n(Réplica 3)]
-    end
-
-    subgraph Data Layer
-        E --> H[Redis Cluster]
-        F --> H
-        G --> H
-        E --> I[CockroachDB]
-        F --> I
-        G --> I
-        E --> J[RabbitMQ]
-        F --> J
-        G --> J
+    subgraph Message_Queue
+        C -->|PUT/DELETE| F[HAProxy]
+        D -->|PUT/DELETE| F
+        E -->|PUT/DELETE| F
+        F -->|Balance| G[RabbitMQ 1]
+        F -->|Balance| H[RabbitMQ 2]
+        F -->|Balance| I[RabbitMQ 3]
     end
 
     subgraph Workers
-        J --> L[Worker 1]
-        J --> M[Worker 2]
-        J --> N[Worker 3]
-        L --> H
-        L --> I
-        M --> H
-        M --> I
-        N --> H
-        N --> I
+        G --> J[Worker 1]
+        H --> J
+        I --> J
+        G --> K[Worker 2]
+        H --> K
+        I --> K
+        G --> L[Worker 3]
+        H --> L
+        I --> L
     end
 
-    A --> B
-    K --> D
-    classDef client fill:#4CAF50,stroke:#388E3C;
+    subgraph Data_Layer
+        J -->|Write| M[HAProxy]
+        K -->|Write| M
+        L -->|Write| M
+        M -->|Balance| N[CockroachDB 1]
+        M -->|Balance| O[CockroachDB 2]
+        M -->|Balance| P[CockroachDB 3]
+        
+        C -->|Direct| Q[Redis Cluster]
+        D -->|Direct| Q
+        E -->|Direct| Q
+    end
+
     classDef frontend fill:#2196F3,stroke:#1976D2;
     classDef api fill:#FF9800,stroke:#F57C00;
-    classDef data fill:#9C27B0,stroke:#7B1FA2;
+    classDef queue fill:#4CAF50,stroke:#388E3C;
     classDef workers fill:#E91E63,stroke:#C2185B;
-    class A,K client;
-    class B,C frontend;
-    class D,E,F,G api;
-    class H,I,J data;
-    class L,M,N workers;
+    classDef data fill:#9C27B0,stroke:#7B1FA2;
+    
+    class A,B frontend;
+    class C,D,E api;
+    class F,G,H,I queue;
+    class J,K,L workers;
+    class M,N,O,P,Q data;
 ```
 ---
+
+## Diagrama de Sequência do Sistema
+
+sequenceDiagram
+    participant Frontend
+    participant Nginx
+    participant PHP-API
+    participant HAProxy
+    participant RabbitMQ
+    participant Worker
+    participant Redis
+    participant CockroachDB
+
+    Frontend->>Nginx: HTTP Request
+    Nginx->>PHP-API: Load Balance
+    
+    alt GET Request
+        PHP-API->>Redis: Check Cache
+        Redis-->>PHP-API: Cache Result
+        PHP-API->>HAProxy: Request DB (if cache miss)
+        HAProxy->>CockroachDB: Balance Query
+        CockroachDB-->>HAProxy: Query Result
+        HAProxy-->>PHP-API: Return Data
+        PHP-API->>Redis: Update Cache
+        PHP-API-->>Nginx: Response
+    else PUT/DELETE Request
+        PHP-API->>HAProxy: Publish Message
+        HAProxy->>RabbitMQ: Balance Message
+        Worker->>RabbitMQ: Consume Message
+        Worker->>Redis: Update Cache
+        Worker->>HAProxy: Write to DB
+        HAProxy->>CockroachDB: Balance Write
+        PHP-API-->>Nginx: ACK
+    end
+    
+    Nginx-->>Frontend: Final Response
 
 ## 🌐 Qualidades de Sistemas Distribuídos
 - **Concorrência**: Utilização de workers assíncronos com RabbitMQ para processar operações paralelas.
