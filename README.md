@@ -734,9 +734,9 @@ graph TD
 
     subgraph API Layer
         C --> D[HAProxy]
-        D --> E[PHP-API<br>(Réplica 1)]
-        D --> F[PHP-API<br>(Réplica 2)]
-        D --> G[PHP-API<br>(Réplica 3)]
+        D --> E[PHP-API\n(Réplica 1)]
+        D --> F[PHP-API\n(Réplica 2)]
+        D --> G[PHP-API\n(Réplica 3)]
     end
 
     subgraph Data Layer
