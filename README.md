@@ -166,7 +166,7 @@ npm start
 
 ## 📚 Manual da API
 
-[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app)
+[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app/docs/index.html)
 
 Explore a API completa com testes em tempo real:
 
@@ -752,7 +752,7 @@ Explore a API completa com testes em tempo real:
 **Crítica**:  
 - PUT 4x mais lento que GET devido a persistência em 3 camadas.  
 
-📄 [Relatório Completo](./testes-carga/relatorios/smoke-test-report.html)  
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/smoke-test-report.html)  
 
 ---
 
@@ -763,7 +763,7 @@ Explore a API completa com testes em tempo real:
 **Recomendações**:  
 - Adicionar instâncias PHP-API | Cache no CockroachDB.  
 
-📄 [Relatório Completo](./testes-carga/relatorios/load-test-report.html)  
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/load-test-report.html)  
 
 ---
 
@@ -774,7 +774,7 @@ Explore a API completa com testes em tempo real:
 **Limite Prático**:  
 - 400 VUs em produção *(latência p95 ≤800ms)*.  
 
-📄 [Relatório Completo](./testes-carga/relatorios/stress-test-report.html)  
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report.html)  
 
 ---
 
@@ -785,7 +785,7 @@ Explore a API completa com testes em tempo real:
 **Ações**:  
 - Reinício periódico de workers | Otimizar garbage collector PHP.  
 
-📄 [Relatório Completo](./testes-carga/relatorios/soak-test-report.html)  
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/soak-test-report.html)  
 
 ---
 
