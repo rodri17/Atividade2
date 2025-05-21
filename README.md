@@ -38,7 +38,7 @@
 ## 📄 Índice
 
 - [Visão Geral](#-visão-geral)
-- [Funcionalidades](#-funcionalidades)
+- [Atributos](#-atributos-de-qualidade)
 - [Primeiros Passos](#-primeiros-passos)
     - [Pré-requisitos](#-pré-requisitos)
     - [Instalação](#️-instalação)
@@ -50,7 +50,7 @@
     - [Índice do Projeto](#-índice-do-projeto)
 - [Arquitetura do Sistema](#-arquitetura-do-sistema)
 - [Qualidades de Sistemas Distribuídos](#-qualidades-de-sistemas-distribuídos)
-- [Testes de Carga](#-testes-de-carga)
+- [Testes](#-testes)
     - [Resultados e Análise](#-resultados-e-análise)
 - [Limites e Capacidades](#-limites-e-capacidades)
 - [Contribuir](#-contribuir)
@@ -76,7 +76,7 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 
 ---
 
-## 📌 Funcionalidades
+## 📌 Atributos de Qualidade
 
 |      | Componente       | Detalhes                             |
 | :--- | :-------------- | :----------------------------------- |
@@ -174,7 +174,7 @@ Explore a API completa com testes em tempo real:
 - 📄 **Visualizar schemas de requisição/resposta**  
 - 📱 **Gerar código para 10+ linguagens automaticamente**
 
-*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app)*
+*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app/docs/index.html)*
 
 ---
 
@@ -720,6 +720,62 @@ Explore a API completa com testes em tempo real:
 
 ## 🌐 Arquitetura do Sistema
 
+```mermaid
+graph TD
+    subgraph Cliente
+        A[Utilizador/Navegador]
+        K[Testes k6]
+    end
+
+    subgraph Frontend
+        B[React]
+        B -->|Proxy| C[Nginx]
+    end
+
+    subgraph API Layer
+        C --> D[HAProxy]
+        D --> E[PHP-API<br>(Réplica 1)]
+        D --> F[PHP-API<br>(Réplica 2)]
+        D --> G[PHP-API<br>(Réplica 3)]
+    end
+
+    subgraph Data Layer
+        E --> H[Redis Cluster]
+        F --> H
+        G --> H
+        E --> I[CockroachDB]
+        F --> I
+        G --> I
+        E --> J[RabbitMQ]
+        F --> J
+        G --> J
+    end
+
+    subgraph Workers
+        J --> L[Worker 1]
+        J --> M[Worker 2]
+        J --> N[Worker 3]
+        L --> H
+        L --> I
+        M --> H
+        M --> I
+        N --> H
+        N --> I
+    end
+
+    A --> B
+    K --> D
+    classDef client fill:#4CAF50,stroke:#388E3C;
+    classDef frontend fill:#2196F3,stroke:#1976D2;
+    classDef api fill:#FF9800,stroke:#F57C00;
+    classDef data fill:#9C27B0,stroke:#7B1FA2;
+    classDef workers fill:#E91E63,stroke:#C2185B;
+    class A,K client;
+    class B,C frontend;
+    class D,E,F,G api;
+    class H,I,J data;
+    class L,M,N workers;
+```
 ---
 
 ## 🌐 Qualidades de Sistemas Distribuídos
@@ -731,7 +787,7 @@ Explore a API completa com testes em tempo real:
 
 ---
 
-## 🧪 Testes de Carga
+## 🧪 Testes
 
 ### 📊 Resultados e Análise
 
