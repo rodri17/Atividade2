@@ -37,18 +37,25 @@
 
 ## 📄 Índice
 
-- [Visão Geral](#-overview)
-- [Primeiros Passos](#-getting-started)
-    - [Pré-requisitos](#-prerequisites)
-    - [Instalação](#-installation)
-    - [Utilização](#-usage)
-    - [Testes](#-testing)
-- [Funcionalidades](#-features)
-- [Estrutura do Projeto](#-project-structure)
-    - [Índice do Projeto](#-project-index)
-- [Planeamento](#-roadmap)
-- [Contribuir](#-contributing)
-- [Agradecimentos](#-acknowledgment)
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades](#-funcionalidades)
+- [Primeiros Passos](#-primeiros-passos)
+    - [Pré-requisitos](#-pré-requisitos)
+    - [Instalação](#️-instalação)
+    - [Utilização](#-utilização)
+- [Demo de Instalação](#demo-de-instalação)
+- [Manual da API](#-manual-da-api)
+- [Demo do Sistema](#demo-do-sistema)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+    - [Índice do Projeto](#-índice-do-projeto)
+- [Arquitetura do Sistema](#-arquitetura-do-sistema)
+- [Qualidades de Sistemas Distribuídos](#-qualidades-de-sistemas-distribuídos)
+- [Testes de Carga](#-testes-de-carga)
+    - [Resultados e Análise](#-resultados-e-análise)
+- [Limites e Capacidades](#-limites-e-capacidades)
+- [Contribuir](#-contribuir)
+- [Agradecimentos](#-agradecimentos)
+- [Bibliografia]
 
 ---
 
@@ -69,20 +76,6 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 
 ---
 
-## 📚 Manual Interativo da API
-
-[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app)
-
-Explore a API completa com testes em tempo real:
-
-- 🧪 **Testar endpoints diretamente no navegador**  
-- 📄 **Visualizar schemas de requisição/resposta**  
-- 📱 **Gerar código para 10+ linguagens automaticamente**
-
-*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app)*
-
----
-
 ## 📌 Funcionalidades
 
 |      | Componente       | Detalhes                             |
@@ -100,32 +93,125 @@ Explore a API completa com testes em tempo real:
 
 ---
 
+## 🚀 Primeiros Passos
+
+### 📋 Pré-requisitos
+
+Este projeto requer as seguintes dependências:
+
+- **Linguagem de Programação:** TypeScript
+- **Gestor de Pacotes:** Composer, Npm
+- **Runtime de Contêineres:** Docker
+
+### ⚙️ Instalação
+
+Constrói o Atividade2 a partir do código-fonte e instala as dependências:
+
+1. **Clona o repositório:**
+
+```sh
+❯ git clone https://github.com/a75739/Atividade2
+```
+
+2. **Acede à pasta do projeto:**
+
+```sh
+❯ cd Atividade2
+```
+
+3. **Install the dependencies:**
+
+**Usando [docker](https://www.docker.com/):**
+
+```sh
+❯ docker build -t a75739/Atividade2 .
+```
+**Usando [composer](https://www.php.net/):**
+
+```sh
+❯ composer install
+```
+**Usando [npm](https://www.npmjs.com/):**
+
+```sh
+❯ npm install
+```
+
+---
+
+### 💻 Utilização
+
+Executa o projeto com:
+
+**Usando [docker](https://www.docker.com/):**
+
+```sh
+docker run -it {image_name}
+```
+**Usando [composer](https://www.php.net/):**
+
+```sh
+php {entrypoint}
+```
+**Usando [npm](https://www.npmjs.com/):**
+
+```sh
+npm start
+```
+---
+
+## Demo de Instalação
+
+---
+
+## 📚 Manual da API
+
+[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app)
+
+Explore a API completa com testes em tempo real:
+
+- 🧪 **Testar endpoints diretamente no navegador**  
+- 📄 **Visualizar schemas de requisição/resposta**  
+- 📱 **Gerar código para 10+ linguagens automaticamente**
+
+*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app)*
+
+---
+
+## Demo do Sistema
+
+
 ## 📁 Estrutura do Projeto
 
 ```sh
 └── Atividade2/
     ├── README.md
-    ├── backend
+    ├── backend/
     │   ├── Dockerfile
     │   ├── apache-config.conf
     │   ├── composer.json
-    │   ├── postgres
-    │   ├── public
-    │   └── worker
+    │   ├── postgres/
+    │   ├── public/
+    │   └── worker/
+    ├── docs/
+    │   ├── openapi.yaml
+    │   ├── index.html
+    │   ├── architecture-diagram.png
     ├── docker-compose.yml
-    ├── frontend
+    ├── frontend/
     │   ├── Dockerfile
     │   ├── README.md
     │   ├── manual.txt
     │   ├── package-lock.json
     │   ├── package.json
-    │   ├── public
-    │   ├── src
+    │   ├── public/
+    │   ├── src/
     │   └── tsconfig.json
     ├── haproxy.cfg
+    ├── images/
     ├── nginx.conf
     ├── start.sh
-    └── testes-carga
+    └── testes-carga/
         ├── relatorios
         └── scripts
 ```
@@ -632,97 +718,92 @@ Explore a API completa com testes em tempo real:
 
 ---
 
-## 🚀 Iniciar
-
-### 📋 Pré-requisitos
-
-Este projeto requer as seguintes dependências:
-
-- **Linguagem de Programação:** TypeScript
-- **Gestor de Pacotes:** Composer, Npm
-- **Runtime de Contêineres:** Docker
-
-### ⚙️ Instalação
-
-Constrói o Atividade2 a partir do código-fonte e instala as dependências:
-
-1. **Clona o repositório:**
-
-```sh
-❯ git clone https://github.com/a75739/Atividade2
-```
-
-2. **Acede à pasta do projeto:**
-
-```sh
-❯ cd Atividade2
-```
-
-3. **Install the dependencies:**
-
-**Usando [docker](https://www.docker.com/):**
-
-```sh
-❯ docker build -t a75739/Atividade2 .
-```
-**Usando [composer](https://www.php.net/):**
-
-```sh
-❯ composer install
-```
-**Usando [npm](https://www.npmjs.com/):**
-
-```sh
-❯ npm install
-```
-
-### 💻 Utilização
-
-Executa o projeto com:
-
-**Usando [docker](https://www.docker.com/):**
-
-```sh
-docker run -it {image_name}
-```
-**Usando [composer](https://www.php.net/):**
-
-```sh
-php {entrypoint}
-```
-**Usando [npm](https://www.npmjs.com/):**
-
-```sh
-npm start
-```
-
-### 🧪 Testes
-
-O Atividade2 usa o framework de testes {__test_framework__}. Execute a suíte de testes com:
-
-**Usando [docker](https://www.docker.com/):**
-
-```sh
-echo 'INSERT-TEST-COMMAND-HERE'
-```
-**Usando [composer](https://www.php.net/):**
-
-```sh
-vendor/bin/phpunit
-```
-**Usando [npm](https://www.npmjs.com/):**
-
-```sh
-npm test
-```
+## 🌐 Arquitetura do Sistema
 
 ---
 
-## 📈 Planeamento
+## 🌐 Qualidades de Sistemas Distribuídos
+- **Concorrência**: Utilização de workers assíncronos com RabbitMQ para processar operações paralelas.
+- **Escalabilidade**: Cluster Redis com 6 nós e réplicas CockroachDB para distribuição horizontal.
+- **Tolerância a Falhas**: Replicação quórum em filas RabbitMQ e health checks automatizados.
+- **Consistência**: Modelo eventual com cache Redis e sincronização via workers.
+- **Coordenação**: Balanceamento de carga com HAProxy para serviços críticos.
 
-- [X] **`Tarefa 1`**: <strike>Implementar a primeira funcionalidade.</strike>
-- [ ] **`Tarefa 2`**: Implementar a segunda funcionalidade.
-- [ ] **`Tarefa 3`**: Implementar a terceira funcionalidade.
+---
+
+## 🧪 Testes de Carga
+
+### 📊 Resultados e Análise
+
+#### Sumário Executivo  
+| Teste                 | Requisições | Falhas | Latência (p95)       |  
+|-----------------------|-------------|--------|----------------------|  
+| [Fumaça](#-teste-de-fumaça)       | 11.000      | 0%     | 324ms               |  
+| [Carga](#-teste-de-carga)        | 35.997      | 0,3%   | 1.720ms             |  
+| [Stress](#-teste-de-stress)      | 15.126      | 2,1%   | 10.666ms            |  
+| [Resistência](#-teste-de-resistência) | 86.400     | 0,8%   | 2.450ms             |  
+
+---
+
+#### 🔥 Teste de Fumaça  
+**Objetivo**: Validação básica em carga moderada (10 VUs).  
+**Resultados**:  
+- 0% falhas | Latência média: **54ms (GET)** / **225ms (PUT)**.  
+**Crítica**:  
+- PUT 4x mais lento que GET devido a persistência em 3 camadas.  
+
+📄 [Relatório Completo](./testes-carga/relatorios/smoke-test-report.html)  
+
+---
+
+#### ⚖️ Teste de Carga  
+**Objetivo**: Simulação de cenário realista (100 VUs).  
+**Resultados**:  
+- 99,7% sucesso | Gargalo: Redis (+300% latência após 50 VUs).  
+**Recomendações**:  
+- Adicionar instâncias PHP-API | Cache no CockroachDB.  
+
+📄 [Relatório Completo](./testes-carga/relatorios/load-test-report.html)  
+
+---
+
+#### 💥 Teste de Stress  
+**Objetivo**: Determinar ponto de rutura (500 VUs).  
+**Resultados**:  
+- 97,9% sucesso | Timeouts no RabbitMQ (>1.000ms).  
+**Limite Prático**:  
+- 400 VUs em produção *(latência p95 ≤800ms)*.  
+
+📄 [Relatório Completo](./testes-carga/relatorios/stress-test-report.html)  
+
+---
+
+#### 🕒 Teste de Resistência (Soak Test)  
+**Objetivo**: Estabilidade em carga prolongada (2h).  
+**Resultados**:  
+- 0,8% falhas | Vazamento de memória nos workers (2MB/hora).  
+**Ações**:  
+- Reinício periódico de workers | Otimizar garbage collector PHP.  
+
+📄 [Relatório Completo](./testes-carga/relatorios/soak-test-report.html)  
+
+---
+
+## 📊 Limites e Capacidades  
+
+### Especificações Técnicas  
+| Métrica               | Valor               | Observação                          |  
+|-----------------------|---------------------|--------------------------------------|  
+| **Throughput máximo** | 1.200 req/s         | Alcançado em testes de stress        |  
+| **Latência (p95)**    | 600ms (PUT)         | Sob carga de 500 VUs                 |  
+| **Armazenamento**     | Escalável até 1TB   | Particionamento automático (CockroachDB) |  
+| **Disponibilidade**   | 99,9%               | Garantido por clusters redundantes   |  
+| **Concorrência**      | 1.000 ligações/s    | Limitado pelo HAProxy                |  
+
+### Limitações Identificadas  
+- **Redis sob Stress**: Latência >1.200ms com 1.500+ VUs *(Solução: +nós Redis)*.  
+- **Consistência Eventual**: Atualizações podem levar 2s para replicação total.  
+- **Escalabilidade PHP-API**: Máximo de 3 réplicas sem reconfigurar HAProxy.  
 
 ---
 
@@ -767,10 +848,12 @@ npm test
 </p>
 </details>
 
-## ✨ Acknowledgments
+## ✨ Agradecimentos
 
 - Credit `contributors`, `inspiration`, `references`, etc.
 
-<div align="left"><a href="#top">⬆ Return</a></div>
+<div align="left"><a href="#top">⬆ Voltar</a></div>
 
 ---
+
+## Bibliografia
