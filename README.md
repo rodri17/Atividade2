@@ -232,7 +232,7 @@ Explore a API completa com testes em tempo real:
             <thead>
                 <tr style='background-color: #f8f9fa;'>
                     <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
-                    <th style='text-align: left; padding: 8px;'>Resumo</th>
+                    <th style='text-align: left; padding: 8px;'>Sumário</th>
                 </tr>
             </thead>
                 <tr style='border-bottom: 1px solid #eee;'>
@@ -283,8 +283,8 @@ Explore a API completa com testes em tempo real:
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
-                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -331,8 +331,8 @@ Explore a API completa com testes em tempo real:
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
-                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -374,8 +374,8 @@ Explore a API completa com testes em tempo real:
             <table style='width: 100%; border-collapse: collapse;'>
             <thead>
                 <tr style='background-color: #f8f9fa;'>
-                    <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                    <th style='text-align: left; padding: 8px;'>Summary</th>
+                    <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                    <th style='text-align: left; padding: 8px;'>Sumário</th>
                 </tr>
             </thead>
                 <tr style='border-bottom: 1px solid #eee;'>
@@ -411,8 +411,8 @@ Explore a API completa com testes em tempo real:
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
-                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -435,8 +435,8 @@ Explore a API completa com testes em tempo real:
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
-                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -461,7 +461,7 @@ Explore a API completa com testes em tempo real:
             <table style='width: 100%; border-collapse: collapse;'>
             <thead>
                 <tr style='background-color: #f8f9fa;'>
-                    <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
+                    <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
                     <th style='text-align: left; padding: 8px;'>Summary</th>
                 </tr>
             </thead>
@@ -506,8 +506,8 @@ Explore a API completa com testes em tempo real:
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
-                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -582,8 +582,8 @@ Explore a API completa com testes em tempo real:
                                     <table style='width: 100%; border-collapse: collapse;'>
                                     <thead>
                                         <tr style='background-color: #f8f9fa;'>
-                                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                                         </tr>
                                     </thead>
                                         <tr style='border-bottom: 1px solid #eee;'>
@@ -606,8 +606,8 @@ Explore a API completa com testes em tempo real:
                                     <table style='width: 100%; border-collapse: collapse;'>
                                     <thead>
                                         <tr style='background-color: #f8f9fa;'>
-                                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                                         </tr>
                                     </thead>
                                         <tr style='border-bottom: 1px solid #eee;'>
@@ -646,8 +646,8 @@ Explore a API completa com testes em tempo real:
                                     <table style='width: 100%; border-collapse: collapse;'>
                                     <thead>
                                         <tr style='background-color: #f8f9fa;'>
-                                            <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                                            <th style='text-align: left; padding: 8px;'>Summary</th>
+                                            <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                                            <th style='text-align: left; padding: 8px;'>Sumário</th>
                                         </tr>
                                     </thead>
                                         <tr style='border-bottom: 1px solid #eee;'>
@@ -672,8 +672,8 @@ Explore a API completa com testes em tempo real:
                             <table style='width: 100%; border-collapse: collapse;'>
                             <thead>
                                 <tr style='background-color: #f8f9fa;'>
-                                    <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                                    <th style='text-align: left; padding: 8px;'>Summary</th>
+                                    <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                                    <th style='text-align: left; padding: 8px;'>Sumário</th>
                                 </tr>
                             </thead>
                                 <tr style='border-bottom: 1px solid #eee;'>
@@ -696,8 +696,8 @@ Explore a API completa com testes em tempo real:
                             <table style='width: 100%; border-collapse: collapse;'>
                             <thead>
                                 <tr style='background-color: #f8f9fa;'>
-                                    <th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
-                                    <th style='text-align: left; padding: 8px;'>Summary</th>
+                                    <th style='width: 30%; text-align: left; padding: 8px;'>Nome do Ficheiro</th>
+                                    <th style='text-align: left; padding: 8px;'>Sumário</th>
                                 </tr>
                             </thead>
                                 <tr style='border-bottom: 1px solid #eee;'>
@@ -720,101 +720,13 @@ Explore a API completa com testes em tempo real:
 
 ## 🌐 Arquitetura do Sistema
 
-```mermaid
-graph TD
-    subgraph Frontend_Layer
-        A[Frontend (React)] -->|HTTP Requests| B[Nginx]
-    end
+![Diagrama de Arquitetura](images/arquitetura_sistema.png)
 
-    subgraph API_Layer
-        B -->|Load Balance| C[PHP-API 1]
-        B -->|Load Balance| D[PHP-API 2]
-        B -->|Load Balance| E[PHP-API 3]
-    end
-
-    subgraph Message_Queue
-        C -->|PUT/DELETE| F[HAProxy]
-        D -->|PUT/DELETE| F
-        E -->|PUT/DELETE| F
-        F -->|Balance| G[RabbitMQ 1]
-        F -->|Balance| H[RabbitMQ 2]
-        F -->|Balance| I[RabbitMQ 3]
-    end
-
-    subgraph Workers
-        G --> J[Worker 1]
-        H --> J
-        I --> J
-        G --> K[Worker 2]
-        H --> K
-        I --> K
-        G --> L[Worker 3]
-        H --> L
-        I --> L
-    end
-
-    subgraph Data_Layer
-        J -->|Write| M[HAProxy]
-        K -->|Write| M
-        L -->|Write| M
-        M -->|Balance| N[CockroachDB 1]
-        M -->|Balance| O[CockroachDB 2]
-        M -->|Balance| P[CockroachDB 3]
-        
-        C -->|Direct| Q[Redis Cluster]
-        D -->|Direct| Q
-        E -->|Direct| Q
-    end
-
-    classDef frontend fill:#2196F3,stroke:#1976D2;
-    classDef api fill:#FF9800,stroke:#F57C00;
-    classDef queue fill:#4CAF50,stroke:#388E3C;
-    classDef workers fill:#E91E63,stroke:#C2185B;
-    classDef data fill:#9C27B0,stroke:#7B1FA2;
-    
-    class A,B frontend;
-    class C,D,E api;
-    class F,G,H,I queue;
-    class J,K,L workers;
-    class M,N,O,P,Q data;
-```
 ---
 
-## Diagrama de Sequência do Sistema
+## Fluxo do Sistema
 
-sequenceDiagram
-    participant Frontend
-    participant Nginx
-    participant PHP-API
-    participant HAProxy
-    participant RabbitMQ
-    participant Worker
-    participant Redis
-    participant CockroachDB
-
-    Frontend->>Nginx: HTTP Request
-    Nginx->>PHP-API: Load Balance
-    
-    alt GET Request
-        PHP-API->>Redis: Check Cache
-        Redis-->>PHP-API: Cache Result
-        PHP-API->>HAProxy: Request DB (if cache miss)
-        HAProxy->>CockroachDB: Balance Query
-        CockroachDB-->>HAProxy: Query Result
-        HAProxy-->>PHP-API: Return Data
-        PHP-API->>Redis: Update Cache
-        PHP-API-->>Nginx: Response
-    else PUT/DELETE Request
-        PHP-API->>HAProxy: Publish Message
-        HAProxy->>RabbitMQ: Balance Message
-        Worker->>RabbitMQ: Consume Message
-        Worker->>Redis: Update Cache
-        Worker->>HAProxy: Write to DB
-        HAProxy->>CockroachDB: Balance Write
-        PHP-API-->>Nginx: ACK
-    end
-    
-    Nginx-->>Frontend: Final Response
+![Fluxo do Sistema](images/fluxo_sistema.png)
 
 ## 🌐 Qualidades de Sistemas Distribuídos
 - **Concorrência**: Utilização de workers assíncronos com RabbitMQ para processar operações paralelas.
