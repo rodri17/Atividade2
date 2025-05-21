@@ -85,9 +85,9 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 | 📄 | **Documentação** | <ul><li>Configuração Docker em <code>docker-compose.yml</code></li><li>Dockerfile do backend em <code>backend/Dockerfile</code></li><li>Dockerfile do frontend em <code>frontend/Dockerfile</code></li></ul> |
 | 🔌 | **Integrações**  | <ul><li>RabbitMQ para troca de mensagens</li><li>Redis para cache</li><li>HAProxy para balanceamento de carga</li><li>CockroachDB como base de dados</li></ul> |
 | 🧩 | **Modularidade**    | <ul><li>Separação entre frontend e backend</li><li>Componentes reutilizáveis em React</li><li>Arquitetura orientada a serviços</li></ul> |
-| 🧪 | **Testes**       | <ul><li>Testes unitários com Jest</li><li>Testes de integração com React Testing Library</li><li>Testes de carga com k6</li></ul> |
+| 🧪 | **Testes**       | <ul><li>Testes de carga com k6</li></ul> |
 | ⚡️  | **Desempenho**   | <ul><li>Respostas de API otimizadas</li><li>Processamento assíncrono com RabbitMQ</li><li>Cache eficiente com Redis</li></ul> |
-| 🛡️ | **Segurança**      | <ul><li>Variáveis de ambiente para dados sensíveis</li><li>Configuração HTTPS com Nginx</li><li>Validação de dados no PHP</li></ul> |
+| 🛡️ | **Segurança**      | <ul><li>Variáveis de ambiente para dados sensíveis</li><li>Validação de dados no PHP</li></ul> |
 | 📦 | **Dependências**  | <ul><li>Dependências PHP em <code>composer.json</code></li><li>Dependências JavaScript em <code>frontend/package.json</code></li><li>Dependências Docker em <code>docker-compose.yml</code></li></ul> |
 | 🚀 | **Escalabilidade**   | <ul><li>Escalabilidade horizontal com containers Docker</li><li>Balanceamento de carga com HAProxy</li><li>Particionamento de base de dados com CockroachDB</li></ul> |
 
@@ -119,7 +119,7 @@ Constrói o Atividade2 a partir do código-fonte e instala as dependências:
 ❯ cd Atividade2
 ```
 
-3. **Install the dependencies:**
+3. **Instale as dependências:**
 
 **Usando [docker](https://www.docker.com/):**
 
@@ -809,9 +809,9 @@ Explore a API completa com testes em tempo real:
 
 ## 🤝 Contribuir
 
-- **💬 [Join the Discussions](https://github.com/a75739/Atividade2/discussions)**: Partilha as tuas ideias, dá feedback ou coloca questões.
-- **🐛 [Report Issues](https://github.com/a75739/Atividade2/issues)**: Envia bugs encontrados ou sugestões de funcionalidades para o projeto `Atividade2`.
-- **💡 [Submit Pull Requests](https://github.com/a75739/Atividade2/blob/main/CONTRIBUTING.md)**: Analisa PRs abertas e submete as tuas próprias contribuições.
+- Partilha as tuas ideias, dá feedback ou coloca questões.
+- Envia bugs encontrados ou sugestões de funcionalidades para o projeto `Atividade2`.
+- Analisa PRs abertas e submete as tuas próprias contribuições.
 
 <details closed>
 <summary>Guia para Contribuidores</summary>
