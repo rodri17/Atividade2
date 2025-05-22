@@ -199,7 +199,7 @@ Este projeto requer as seguintes dependências:
 - **Gestor de Pacotes:** Composer, Npm
 - **Runtime de Contêineres:** Docker
 
-### 🛠️ Instalação
+### ⚙️ Instalação
 
 Constrói o Atividade2 a partir do código-fonte e instala as dependências:
 
@@ -256,7 +256,7 @@ npm start
 ```
 ---
 
-## Demo de Instalação
+## 🛠️ Demo de Instalação
 
 ---
 
@@ -329,7 +329,7 @@ npm start
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/start.sh'>start.sh</a></b></td>
                     <td style='padding: 8px;'>
-                        - Automatiza a configuração e inicialização de uma arquitectura multi-serviços utilizando Docker Compose<br>
+                        - Automatiza a configuração e inicialização de uma arquitetura multi-serviços utilizando Docker Compose<br>
                         - Orquestra o deployment dos serviços Redis, CockroachDB, RabbitMQ, backend e frontend, assim como balanceadores de carga, garantindo que cada componente esteja pronto antes de prosseguir<br>
                         - Este script simplifica a preparação do ambiente de desenvolvimento, facilitando a gestão eficiente dos serviços e a integração dentro da arquitetura global do código.
                     </td>
@@ -337,16 +337,16 @@ npm start
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/nginx.conf'>nginx.conf</a></b></td>
                     <td style='padding: 8px;'>
-                        - Configura um servidor Nginx para gerir eficientemente pedidos HTTP recebidos, direccionando o tráfego para a API PHP e assegurando um desempenho optimizado através de definições que melhoram o manuseamento de ligações e gestão de timeouts<br>
-                        - Inclui também um endpoint de verificação de integridade para monitorizar o estado do servidor, contribuindo para a fiabilidade e capacidade de resposta da arquitectura da aplicação.
+                        - Configura um servidor Nginx para gerir eficientemente pedidos HTTP recebidos, direcionando o tráfego para a API PHP e assegurando um desempenho otimizado através de definições que melhoram o manuseamento de ligações e gestão de timeouts<br>
+                        - Inclui também um endpoint de verificação de integridade para monitorizar o estado do servidor, contribuindo para a fiabilidade e capacidade de resposta da arquitetura da aplicação.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/haproxy.cfg'>haproxy.cfg</a></b></td>
                     <td style='padding: 8px;'>
                         - Configura o HAProxy para gerir o tráfego dos serviços RabbitMQ e CockroachDB, garantindo balanceamento de carga eficiente e verificações de integridade<br>
-                        - Estabelece frontends para ambos os serviços, direccionando as ligações recebidas para os backends apropriados enquanto monitoriza a saúde dos servidores<br>
-                        - Adicionalmente, fornece uma interface de estatísticas com informações de desempenho em tempo real, contribuindo para a fiabilidade e escalabilidade da arquitectura da aplicação.
+                        - Estabelece frontends para ambos os serviços, direcionando as ligações recebidas para os backends apropriados enquanto monitoriza a saúde dos servidores<br>
+                        - Adicionalmente, fornece uma interface de estatísticas com informações de desempenho em tempo real, contribuindo para a fiabilidade e escalabilidade da arquitetura da aplicação.
                     </td>
                 </tr>
             </table>
@@ -384,7 +384,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Realiza um teste de resistência (soak test) para avaliar o desempenho e a estabilidade da aplicação sob carga contínua<br>
                                 - Ao simular múltiplos utilizadores virtuais durante um longo período de tempo, avalia a capacidade do sistema em lidar com pedidos concorrentes, garantindo que os tempos de resposta se mantêm dentro dos limites aceitáveis<br>
-                                - Adicionalmente, gera um relatório HTML abrangente com o resumo dos resultados, facilitando a análise e optimização da arquitectura da base de código.
+                                - Adicionalmente, gera um relatório HTML abrangente com o resumo dos resultados, facilitando a análise e otimização da arquitetura da base de código.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -392,15 +392,15 @@ npm start
                             <td style='padding: 8px;'>
                                 - Realiza testes de fumo à aplicação, simulando múltiplos utilizadores virtuais a interagir com um endpoint específico<br>
                                 - Verifica o tratamento correto de pedidos PUT e GET, assegurando que a aplicação responde adequadamente sob carga<br>
-                                - Adicionalmente, gera um relatório HTML completo com o resumo dos resultados, contribuindo para a avaliação da fiabilidade e do desempenho da arquitectura da base de código.
+                                - Adicionalmente, gera um relatório HTML completo com o resumo dos resultados, contribuindo para a avaliação da fiabilidade e do desempenho da arquitetura da base de código.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/testes-carga/scripts/load-test.js'>load-test.js</a></b></td>
                             <td style='padding: 8px;'>
-                                - Script de teste de carga que simula interacções de utilizadores com um serviço web, avaliando o seu desempenho sob diferentes condições de tráfego<br>
+                                - Script de teste de carga que simula interações de utilizadores com um serviço web, avaliando o seu desempenho sob diferentes condições de tráfego<br>
                                 - Executa uma série de pedidos HTTP—PUT, GET e DELETE—enquanto monitoriza os tempos de resposta e as taxas de sucesso<br>
-                                - Os resultados são compilados num relatório HTML, fornecendo informações sobre a fiabilidade e eficiência do sistema, essenciais para manter um desempenho ideal na arquitectura global da base de código.
+                                - Os resultados são compilados num relatório HTML, fornecendo informações sobre a fiabilidade e eficiência do sistema, essenciais para manter um desempenho ideal na arquitetura global da base de código.
                             </td>
                         </tr>
                     </table>
@@ -438,10 +438,10 @@ npm start
                         <tr style='border-bottom: 1px solid #eee;'>
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/testes-carga/relatorios/load-test-report.html'>load-test-report.html</a></b></td>
                             <td style='padding: 8px;'>
-                                - O ficheiro <code>load-test-report.html</code> apresenta um relatório completo gerado a partir dos testes de carga realizados no âmbito do projecto<br>
+                                - O ficheiro <code>load-test-report.html</code> apresenta um relatório completo gerado a partir dos testes de carga realizados no âmbito do projeto<br>
                                 - O seu principal objetivo é apresentar os resultados dos testes de desempenho executados com a ferramenta K6, oferecendo uma análise do comportamento do sistema sob diferentes condições de carga<br>
-                                - Este relatório é uma componente essencial da arquitectura da base de código, permitindo a programadores e decisores visualizar métricas de desempenho, identificar possíveis estrangulamentos e tomar decisões fundamentadas sobre optimizações do sistema<br>
-                                - Ao fornecer um resumo claro e estruturado dos resultados dos testes de carga, este relatório HTML reforça a capacidade do projecto de garantir fiabilidade e escalabilidade em ambientes de produção. Em suma, o ficheiro <code>load-test-report.html</code> é um artefacto crítico que encapsula os resultados dos testes de carga, contribuindo para o objectivo do projecto de entregar uma aplicação robusta e de elevado desempenho.
+                                - Este relatório é uma componente essencial da arquitetura da base de código, permitindo a programadores e decisores visualizar métricas de desempenho, identificar possíveis estrangulamentos e tomar decisões fundamentadas sobre otimizações do sistema<br>
+                                - Ao fornecer um resumo claro e estruturado dos resultados dos testes de carga, este relatório HTML reforça a capacidade do projeto de garantir fiabilidade e escalabilidade em ambientes de produção. Em suma, o ficheiro <code>load-test-report.html</code> é um artefato crítico que encapsula os resultados dos testes de carga, contribuindo para o objectivo do projeto de entregar uma aplicação robusta e de elevado desempenho.
                             </td>
                         </tr>
                     </table>
@@ -465,24 +465,24 @@ npm start
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/backend/apache-config.conf'>apache-config.conf</a></b></td>
                     <td style='padding: 8px;'>
-                        - Configura o servidor web Apache para servir uma aplicação web alojada no directório raiz especificado<br>
-                        - Estabelece um *virtual host* para tratamento de pedidos HTTP na porta 80, permitindo a reescrita de URLs e concedendo acesso ao directório público<br>
-                        - Adicionalmente, define o registo de eventos de erro e de acesso, assegurando uma monitorização e gestão adequadas do tráfego web dentro da arquitectura geral do projecto.
+                        - Configura o servidor web Apache para servir uma aplicação web alojada no diretório raiz especificado<br>
+                        - Estabelece um *virtual host* para tratamento de pedidos HTTP na porta 80, permitindo a reescrita de URLs e concedendo acesso ao diretório público<br>
+                        - Adicionalmente, define o registo de eventos de erro e de acesso, assegurando uma monitorização e gestão adequadas do tráfego web dentro da arquitetura geral do projeto.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/backend/Dockerfile'>Dockerfile</a></b></td>
                     <td style='padding: 8px;'>
-                        - Facilita a configuração de um ambiente PHP 8.2 com Apache para o backend do projecto<br>
+                        - Facilita a configuração de um ambiente PHP 8.2 com Apache para o backend do projeto<br>
                         - Garante a instalação das dependências necessárias, configura definições do Apache e prepara a aplicação para implementação<br>
-                        - Ao optimizar o *autoloader* e implementar verificações de integridade (*health checks*), melhora o desempenho e a fiabilidade, contribuindo para a eficiência e manutenibilidade da arquitectura global.
+                        - Ao otimizar o *autoloader* e implementar verificações de integridade (*health checks*), melhora o desempenho e a fiabilidade, contribuindo para a eficiência e manutenibilidade da arquitetura global.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/backend/composer.json'>composer.json</a></b></td>
                     <td style='padding: 8px;'>
-                        - Define as dependências essenciais para o backend do projecto, assegurando compatibilidade com várias extensões e bibliotecas PHP<br>
-                        - Ao especificar requisitos como PDO para interacção com base de dados, Redis para cache e AMQP para mensagens, facilita a integração e comunicação fluída dentro da arquitectura geral, permitindo uma gestão robusta de dados e uma orquestração eficiente de serviços em toda a aplicação.
+                        - Define as dependências essenciais para o backend do projeto, assegurando compatibilidade com várias extensões e bibliotecas PHP<br>
+                        - Ao especificar requisitos como PDO para interacção com base de dados, Redis para cache e AMQP para mensagens, facilita a integração e comunicação fluída dentro da arquitetura geral, permitindo uma gestão robusta de dados e uma orquestração eficiente de serviços em toda a aplicação.
                     </td>
                 </tr>
             </table>
@@ -503,7 +503,7 @@ npm start
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/backend/worker/worker.php'>worker.php</a></b></td>
                             <td style='padding: 8px;'>
                                 - Responsável pelo processamento de eventos relacionados com o dicionário, conectando-se a um *message broker* RabbitMQ e a uma base de dados CockroachDB<br>
-                                - Escuta actualizações e eliminações de palavras, actualizando a cache Redis e persistindo as alterações na base de dados conforme necessário<br>
+                                - Escuta atualizações e eliminações de palavras, atualizando a cache Redis e persistindo as alterações na base de dados conforme necessário<br>
                                 - Esta funcionalidade é essencial para manter a sincronização em tempo real dos dados do dicionário em toda a aplicação, assegurando uma recuperação eficiente de dados e consistência.
                             </td>
                         </tr>
@@ -527,7 +527,7 @@ npm start
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/backend/postgres/db.php'>db.php</a></b></td>
                             <td style='padding: 8px;'>
                                 - Estabelece uma ligação a uma base de dados CockroachDB através de uma função robusta que garante acesso persistente e lida graciosamente com eventuais erros de ligação<br>
-                                - Ao utilizar variáveis de ambiente para configuração, integra-se perfeitamente na arquitectura global do backend, facilitando interacções fiáveis com a base de dados, essenciais para a gestão de dados e eficiência operacional da aplicação<br>
+                                - Ao utilizar variáveis de ambiente para configuração, integra-se perfeitamente na arquitetura global do backend, facilitando interações fiáveis com a base de dados, essenciais para a gestão de dados e eficiência operacional da aplicação<br>
                                 - Este mecanismo de ligação é crucial para manter a integridade dos dados e o desempenho consistente ao longo de toda a base de código.
                             </td>
                         </tr>
@@ -554,22 +554,22 @@ npm start
                     <td style='padding: 8px;'>
                         - Define o ambiente do frontend para uma aplicação React, gerindo as dependências e os scripts essenciais para o desenvolvimento, testes e builds de produção<br>
                         - Integra várias bibliotecas para testes, *routing* e gestão de estado, garantindo uma interface de utilizador robusta<br>
-                        - Adicionalmente, estabelece configurações para TypeScript e ESLint, promovendo a qualidade do código e a compatibilidade entre diferentes navegadores, contribuindo assim para a arquitectura geral do projecto.
+                        - Adicionalmente, estabelece configurações para TypeScript e ESLint, promovendo a qualidade do código e a compatibilidade entre diferentes navegadores, contribuindo assim para a arquitetura geral do projeto.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/tsconfig.json'>tsconfig.json</a></b></td>
                     <td style='padding: 8px;'>
-                        - Configura as opções do compilador TypeScript para o frontend do projecto, garantindo compatibilidade com funcionalidades modernas de JavaScript, mesmo em ambientes mais antigos<br>
+                        - Configura as opções do compilador TypeScript para o frontend do projeto, garantindo compatibilidade com funcionalidades modernas de JavaScript, mesmo em ambientes mais antigos<br>
                         - Estabelece regras rigorosas de verificação de tipos e suporta sintaxe JSX para componentes React<br>
-                        - Ao incluir o directório de origem, facilita uma experiência de desenvolvimento fluida, promovendo a qualidade e a manutenibilidade do código na arquitectura da base de código.
+                        - Ao incluir o diretório de origem, facilita uma experiência de desenvolvimento fluida, promovendo a qualidade e a manutenibilidade do código na arquitetura da base de código.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
                     <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/Dockerfile'>Dockerfile</a></b></td>
                     <td style='padding: 8px;'>
                         - Facilita a configuração de um ambiente Node.js para a aplicação frontend, definindo os passos necessários para instalar as dependências e executar o servidor de desenvolvimento<br>
-                        - Ao estabelecer um directório de trabalho, copiar os ficheiros de configuração e expor a porta adequada, garante um processo de desenvolvimento simplificado, permitindo aos programadores focarem-se na implementação de funcionalidades e na melhoria da experiência do utilizador dentro da arquitectura global do projecto.
+                        - Ao estabelecer um diretório de trabalho, copiar os ficheiros de configuração e expor a porta adequada, garante um processo de desenvolvimento simplificado, permitindo aos programadores focarem-se na implementação de funcionalidades e na melhoria da experiência do utilizador dentro da arquitetura global do projeto.
                     </td>
                 </tr>
                 <tr style='border-bottom: 1px solid #eee;'>
@@ -577,7 +577,7 @@ npm start
                     <td style='padding: 8px;'>
                         - Fornece instruções essenciais para configurar e gerir um sistema distribuído utilizando Docker e Redis<br>
                         - Descreve os passos para construir os contentores, configurar um cluster Redis e verificar a sua saúde e conectividade<br>
-                        - Adicionalmente, inclui comandos para monitorização de *logs* e execução de testes de carga, assegurando a escalabilidade e resiliência do sistema, em conformidade com a arquitectura do projecto focada na disponibilidade e tolerância a partições.
+                        - Adicionalmente, inclui comandos para monitorização de *logs* e execução de testes de carga, assegurando a escalabilidade e resiliência do sistema, em conformidade com a arquitetura do projeto focada na disponibilidade e tolerância a partições.
                     </td>
                 </tr>
             </table>
@@ -599,7 +599,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Melhora as capacidades de teste ao integrar *matchers* personalizados do Jest especificamente desenhados para asserções em nós DOM<br>
                                 - Esta configuração facilita testes mais intuitivos e legíveis dentro da base de código do frontend, permitindo aos programadores verificar eficazmente os componentes da interface de utilizador<br>
-                                - Ao tirar partido destes *matchers*, o projecto assegura um ambiente de testes robusto que contribui para a manutenção de interfaces de alta qualidade ao longo do ciclo de desenvolvimento.
+                                - Ao tirar partido destes *matchers*, o projeto assegura um ambiente de testes robusto que contribui para a manutenção de interfaces de alta qualidade ao longo do ciclo de desenvolvimento.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -607,7 +607,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Define tipos TypeScript para uma aplicação React, garantindo segurança de tipos e melhorando a experiência do programador dentro da base de código<br>
                                 - Ao referenciar os tipos do react-scripts, facilita uma integração fluida com o ecossistema React, promovendo práticas de desenvolvimento eficientes e reduzindo erros em tempo de execução<br>
-                                - Isto contribui para a arquitectura geral ao fornecer uma base forte de tipagem que suporta a manutenibilidade e escalabilidade da aplicação frontend.
+                                - Isto contribui para a arquitetura geral ao fornecer uma base forte de tipagem que suporta a manutenibilidade e escalabilidade da aplicação frontend.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -615,7 +615,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Facilita a estrutura central de *routing* e layout da aplicação, permitindo uma navegação fluida entre a interface principal de gestão do dicionário e as suas páginas associadas<br>
                                 - Ao integrar o componente de layout, assegura uma experiência de utilizador consistente enquanto gere a apresentação do conteúdo relacionado com o dicionário<br>
-                                - Esta configuração fundamental suporta a arquitectura global, permitindo uma expansão e manutenção eficientes da aplicação frontend.
+                                - Esta configuração fundamental suporta a arquitetura global, permitindo uma expansão e manutenção eficientes da aplicação frontend.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -623,15 +623,15 @@ npm start
                             <td style='padding: 8px;'>
                                 - Inicializa a aplicação React ao renderizar o componente principal App num ambiente estruturado que suporta *routing*<br>
                                 - Integra estilos essenciais para uma tematização e layout consistentes, ao mesmo tempo que permite monitorização de desempenho através do web vitals<br>
-                                - Esta configuração fundamental assegura uma experiência de utilizador fluida e serve como ponto de entrada para toda a arquitectura do frontend, facilitando a navegação e a interação entre componentes.
+                                - Esta configuração fundamental assegura uma experiência de utilizador fluida e serve como ponto de entrada para toda a arquitetura do frontend, facilitando a navegação e a interação entre componentes.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/src/setupProxy.js'>setupProxy.js</a></b></td>
                             <td style='padding: 8px;'>
-                                - Facilita a comunicação com a API ao configurar um middleware proxy que direcciona pedidos do frontend para uma API backend em PHP<br>
+                                - Facilita a comunicação com a API ao configurar um middleware proxy que direciona pedidos do frontend para uma API backend em PHP<br>
                                 - Esta configuração assegura uma interação sem falhas entre cliente e servidor, fornecendo também um endpoint de verificação de saúde para monitorizar o estado da aplicação<br>
-                                - No geral, melhora a arquitectura ao simplificar o fluxo de dados e aumentar a fiabilidade no ambiente de desenvolvimento.
+                                - No geral, melhora a arquitetura ao simplificar o fluxo de dados e aumentar a fiabilidade no ambiente de desenvolvimento.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -639,7 +639,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Facilita o teste do componente principal da aplicação, garantindo que elementos essenciais são renderizados corretamente na interface de utilizador<br>
                                 - Ao verificar a presença de texto chave, contribui para manter a qualidade e fiabilidade geral da base de código frontend, melhorando a experiência do utilizador e a confiança na funcionalidade da aplicação<br>
-                                - Esta abordagem de teste suporta práticas de integração e desenvolvimento contínuos dentro do projecto.
+                                - Esta abordagem de teste suporta práticas de integração e desenvolvimento contínuos dentro do projeto.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -647,7 +647,7 @@ npm start
                             <td style='padding: 8px;'>
                                 - Facilita a medição e reporte de métricas de desempenho web dentro da aplicação<br>
                                 - Ao tirar partido da biblioteca web-vitals, captura indicadores essenciais de desempenho como Cumulative Layout Shift, First Input Delay, First Contentful Paint, Largest Contentful Paint e Time to First Byte<br>
-                                - Esta funcionalidade melhora a experiência do utilizador ao fornecer perceções sobre o desempenho da aplicação, permitindo optimizações informadas em toda a base de código.
+                                - Esta funcionalidade melhora a experiência do utilizador ao fornecer perceções sobre o desempenho da aplicação, permitindo otimizações informadas em toda a base de código.
                             </td>
                         </tr>
                     </table>
