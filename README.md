@@ -113,49 +113,49 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 ## 🏗️ Decisões Arquiteturais Estratégicas
 
 ### **CockroachDB**
-- **Por que?** Resolve o problema de SPOF (Single Point of Failure) através de replicação automática
+- **Por quê?** Resolve o problema de SPOF (Single Point of Failure) através de replicação automática
 - **Contribuição para SD**:
   - **Consistência**: Modelo de relógio híbrido (Hybrid Logical Clocks)
   - **Tolerância**: Sobrevive a falhas de N/2-1 nós simultâneos
   - **Escala**: Adição transparente de novos nós ao cluster
 
 ### **Redis Cluster**
-- **Por que?** Oferece cache distribuído com consistência eventual controlada
+- **Por quê?** Oferece cache distribuído com consistência eventual controlada
 - **Contribuição para SD**:
   - **Performance**: Reduz latência de leituras para <10ms
   - **Disponibilidade**: Re-sharding automático durante falhas
   - **Consistência**: Políticas TTL-driven para invalidação de cache
 
 ### **HAProxy**
-- **Por que?** Unifica o plano de controle para múltiplos serviços
+- **Por quê?** Unifica o plano de controle para múltiplos serviços
 - **Contribuição para SD**:
   - **Balanceamento**: Distribuição inteligente baseada em saúde dos nós
   - **Observabilidade**: Métricas em tempo real via endpoint /stats
   - **Segurança**: Rate limiting para prevenir DDoS
 
 ### **RabbitMQ com Quórum**
-- **Por que?** Garante durabilidade de mensagens em cenários de crash
+- **Por quê?** Garante durabilidade de mensagens em cenários de crash
 - **Contribuição para SD**:
   - **Ordenação**: Garantia de entrega FIFO dentro do mesmo canal
   - **Durabilidade**: Replicação síncrona para ≥(N/2+1) nós
   - **Eficiência**: Prefetching otimizado para workers paralelos
 
 ### **PHP-API (Stateless)**
-- **Por que?** Permite escalonamento horizontal sem coordenação complexa
+- **Por quê?** Permite escalonamento horizontal sem coordenação complexa
 - **Contribuição para SD**:
   - **Elasticidade**: Pods efêmeros escaláveis sob demanda
   - **Resiliência**: Reinicialização rápida sem perda de estado
   - **Portabilidade**: Imagem Docker autocontida
 
 ### **Nginx**
-- **Por que?** Edge router com terminação SSL e compressão eficiente
+- **Por quê?** Edge router com terminação SSL e compressão eficiente
 - **Contribuição para SD**:
   - **Caching**: Reduz carga no backend em 40% para leituras
   - **Segurança**: WAF integrado contra injeção SQL/XSS
   - **Protocolos**: Suporte nativo para HTTP/2 e WebSocket
 
 ### **Workers Assíncronos**
-- **Por que?** Separação clara entre camada de ingestão e processamento
+- **Por quê?** Separação clara entre camada de ingestão e processamento
 - **Contribuição para SD**:
   - **Throughput**: Paralelismo massivo via múltiplos consumidores
   - **Isolamento**: Falhas no worker não afetam a API principal
@@ -197,64 +197,47 @@ Este projeto requer as seguintes dependências:
 
 - **Linguagem de Programação:** TypeScript
 - **Gestor de Pacotes:** Composer, Npm
-- **Runtime de Contêineres:** Docker
+- **Runtime de Containers:** Docker
 
 ### ⚙️ Instalação
 
-Constrói o Atividade2 a partir do código-fonte e instala as dependências:
+Construa a Atividade2 a partir do código-fonte e instale as dependências:
 
-1. **Clona o repositório:**
+1. **Clone o repositório:**
 
-```sh
-❯ git clone https://github.com/a75739/Atividade2
-```
+❯ `git clone https://github.com/a75739/Atividade2`
 
-2. **Acede à pasta do projeto:**
+2. **Aceda à pasta do projeto:**
 
-```sh
-❯ cd Atividade2
-```
+❯ `cd Atividade2`
 
-3. **Instale as dependências:**
+3. **Execute o Docker Engine:**
 
-**Usando [docker](https://www.docker.com/):**
-
-```sh
-❯ docker build -t a75739/Atividade2 .
-```
-**Usando [composer](https://www.php.net/):**
-
-```sh
-❯ composer install
-```
-**Usando [npm](https://www.npmjs.com/):**
-
-```sh
-❯ npm install
-```
+**Usando [Docker](https://www.docker.com/)**
 
 ---
 
 ### 💻 Utilização
 
-Executa o projeto com:
+#### Em Linux:
 
-**Usando [docker](https://www.docker.com/):**
+Execute o projeto com:
 
-```sh
-docker run -it {image_name}
-```
-**Usando [composer](https://www.php.net/):**
+❯ `./start.sh`
 
-```sh
-php {entrypoint}
-```
-**Usando [npm](https://www.npmjs.com/):**
+#### Em Windows, requer [Git Bash](https://git-scm.com/downloads/win) ou [WSL](https://ubuntu.com/desktop/wsl):
 
-```sh
-npm start
-```
----
+##### Com Git Bash:
+
+Clique na pasta do projeto `Atividade2` com o lado direito do rato e selecione "Mostrar mais opções" > "Open Git Bash here"
+
+Pare a execução do projeto com:
+
+❯ `docker-compose down --remove-orphans`
+
+##### Com WSL:
+
+Execução igual a [Linux](#em-linux).
 
 ## 🛠️ Demo de Instalação
 
