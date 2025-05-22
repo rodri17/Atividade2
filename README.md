@@ -205,11 +205,15 @@ Construa a Atividade2 a partir do código-fonte e instale as dependências:
 
 1. **Clone o repositório:**
 
-❯ `git clone https://github.com/a75739/Atividade2`
+```sh
+ git clone https://github.com/a75739/Atividade2
+```
 
 2. **Aceda à pasta do projeto:**
 
-❯ `cd Atividade2`
+```sh
+ cd Atividade2
+```
 
 3. **Execute o Docker Engine:**
 
@@ -219,11 +223,13 @@ Construa a Atividade2 a partir do código-fonte e instale as dependências:
 
 ### 💻 Utilização
 
-#### Em Linux:
+#### Em linux:
 
 Execute o projeto com:
 
-❯ `./start.sh`
+```sh
+ ./start.sh
+```
 
 #### Em Windows, requer [Git Bash](https://git-scm.com/downloads/win) ou [WSL](https://ubuntu.com/desktop/wsl):
 
@@ -233,11 +239,12 @@ Clique na pasta do projeto `Atividade2` com o lado direito do rato e selecione "
 
 Pare a execução do projeto com:
 
-❯ `docker-compose down --remove-orphans`
-
+```sh
+ docker-compose down --remove-orphans
+```
 ##### Com WSL:
 
-Execução igual a [Linux](#em-linux).
+Execução igual a [linux](#em-linux).
 
 ## 🛠️ Demo de Instalação
 
