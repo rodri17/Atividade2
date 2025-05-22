@@ -237,14 +237,21 @@ Execute o projeto com:
 
 Clique na pasta do projeto `Atividade2` com o lado direito do rato e selecione "Mostrar mais opções" > "Open Git Bash here"
 
+Execute o projeto com:
+
+```sh
+ ./start.sh
+```
+
+##### Com WSL:
+
+Execução igual a [linux](#em-linux).
+
 Pare a execução do projeto com:
 
 ```sh
  docker-compose down --remove-orphans
 ```
-##### Com WSL:
-
-Execução igual a [linux](#em-linux).
 
 ## 🛠️ Demo de Instalação
 
