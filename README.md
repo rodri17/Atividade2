@@ -8,13 +8,6 @@
 # ATIVIDADE2
 
 <em>Potencie as suas aplicações com soluções escaláveis e integradas.</em>
-
-<!-- BADGES -->
-<img src="https://img.shields.io/github/license/a75739/Atividade2?style=flat&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-<img src="https://img.shields.io/github/last-commit/a75739/Atividade2?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<img src="https://img.shields.io/github/languages/top/a75739/Atividade2?style=flat&color=0080ff" alt="repo-top-language">
-<img src="https://img.shields.io/github/languages/count/a75739/Atividade2?style=flat&color=0080ff" alt="repo-language-count">
-
 <em>Construído com as seguintes ferramentas e tecnologias:</em>
 
 <img src="https://img.shields.io/badge/JSON-000000.svg?style=flat&logo=JSON&logoColor=white" alt="JSON">
@@ -37,19 +30,20 @@
 
 ## 📄 Índice
 
+- [Demo do Sistema](#demo-do-sistema)
 - [Visão Geral](#-visão-geral)
-- [Atributos](#-atributos-de-qualidade)
+- [Qualidades do Sistema Distribuído](#-qualidades-do-sistema-distribuído)
+- [Decisões Arquiteturais Estratégicas](#️-decisões-arquiteturais-estratégicas)
+- [Arquitetura do Sistema](#-arquitetura-do-sistema)
+- [Fluxo do Sistema](#-fluxo-do-sistema)
+- [Manual da API](#-manual-da-api)
 - [Primeiros Passos](#-primeiros-passos)
     - [Pré-requisitos](#-pré-requisitos)
     - [Instalação](#️-instalação)
     - [Utilização](#-utilização)
 - [Demo de Instalação](#demo-de-instalação)
-- [Manual da API](#-manual-da-api)
-- [Demo do Sistema](#demo-do-sistema)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
     - [Índice do Projeto](#-índice-do-projeto)
-- [Arquitetura do Sistema](#-arquitetura-do-sistema)
-- [Qualidades de Sistemas Distribuídos](#-qualidades-de-sistemas-distribuídos)
 - [Testes](#-testes)
     - [Resultados e Análise](#-resultados-e-análise)
 - [Limites e Capacidades](#-limites-e-capacidades)
@@ -58,6 +52,7 @@
 - [Bibliografia]
 
 ---
+## 🎥 Demo do Sistema
 
 ## ✨ Visão Geral
 
@@ -76,20 +71,121 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 
 ---
 
-## 📌 Atributos de Qualidade
+## 🌐 Qualidades do Sistema Distribuído
 
-|      | Componente       | Detalhes                             |
-| :--- | :-------------- | :----------------------------------- |
-| ⚙️  | **Arquitetura**  | <ul><li>Arquitetura de microserviços</li><li>Backend (PHP) e Frontend (React)</li><li>Containerização com Docker</li></ul> |
-| 🔩 | **Qualidade do Código**  | <ul><li>TypeScript para segurança de tipos</li><li>PHP CodeSniffer para padrões de código PHP</li><li>ESLint para análise estática de JavaScript</li></ul> |
-| 📄 | **Documentação** | <ul><li>Configuração Docker em <code>docker-compose.yml</code></li><li>Dockerfile do backend em <code>backend/Dockerfile</code></li><li>Dockerfile do frontend em <code>frontend/Dockerfile</code></li></ul> |
-| 🔌 | **Integrações**  | <ul><li>RabbitMQ para troca de mensagens</li><li>Redis para cache</li><li>HAProxy para balanceamento de carga</li><li>CockroachDB como base de dados</li></ul> |
-| 🧩 | **Modularidade**    | <ul><li>Separação entre frontend e backend</li><li>Componentes reutilizáveis em React</li><li>Arquitetura orientada a serviços</li></ul> |
-| 🧪 | **Testes**       | <ul><li>Testes de carga com k6</li></ul> |
-| ⚡️  | **Desempenho**   | <ul><li>Respostas de API otimizadas</li><li>Processamento assíncrono com RabbitMQ</li><li>Cache eficiente com Redis</li></ul> |
-| 🛡️ | **Segurança**      | <ul><li>Variáveis de ambiente para dados sensíveis</li><li>Validação de dados no PHP</li></ul> |
-| 📦 | **Dependências**  | <ul><li>Dependências PHP em <code>composer.json</code></li><li>Dependências JavaScript em <code>frontend/package.json</code></li><li>Dependências Docker em <code>docker-compose.yml</code></li></ul> |
-| 🚀 | **Escalabilidade**   | <ul><li>Escalabilidade horizontal com containers Docker</li><li>Balanceamento de carga com HAProxy</li><li>Particionamento de base de dados com CockroachDB</li></ul> |
+### **1. Consistência de Dados**
+| Componente         | Contribuição                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| **CockroachDB**     | Utiliza o algoritmo **Raft** para consenso distribuído, garantindo operações lineares e ACID mesmo durante partições de rede. |
+| **Redis Cluster**   | Implementa o protocolo **CRDTs** (Conflict-free Replicated Data Types) para resolução automática de conflitos em escrita paralela. |
+| **RabbitMQ Quórum** | Filas quórum com replicação síncrona asseguram entrega exatamente-uma (exactly-once) de mensagens. |
+
+### **2. Tolerância a Falhas**
+| Componente         | Mecanismo de Resiliência                                                    |
+|---------------------|-----------------------------------------------------------------------------|
+| **HAProxy**         | Health checks ativos + failover automático entre instâncias PHP-API e RabbitMQ. |
+| **Redis Cluster**   | Réplicas shardadas com failover automático via algoritmo **Gossip**.        |
+| **CockroachDB**     | Replicação multi-AZ com recuperação de nós em <30s usando **Range Leases**. |
+
+### **3. Escalabilidade Horizontal**
+| Componente         | Estratégia de Escalonamento                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| **PHP-API**         | Arquitetura stateless permite adição dinâmica de réplicas via Docker Swarm. |
+| **Workers**         | Consumidores paralelos com auto-balancing via **Prefetch Count** no RabbitMQ. |
+| **Nginx**           | Balanceamento Round-Robin + cache de respostas HTTP para descarregar a API. |
+
+### **4. Alta Disponibilidade**
+| Componente         | Técnica de Garantia                                                         |
+|---------------------|-----------------------------------------------------------------------------|
+| **CockroachDB**     | Replicação multi-região com eleição de líder via **Raft Leader Lease**.     |
+| **RabbitMQ**        | Filas espelhadas (mirrored queues) com política quórum para alta durabilidade. |
+| **HAProxy**         | Circuit breaking inteligente com re-tentativas em múltiplas camadas.       |
+
+### **5. Coordenação de Recursos**
+| Componente         | Protocolo/Mecanismo                                                         |
+|---------------------|-----------------------------------------------------------------------------|
+| **Redis**           | Lock distribuído via **RedLock** para operações atômicas entre workers.     |
+| **CockroachDB**     | Sistema de transações distribuídas usando **Timestamp Oracle**.            |
+| **PHP-API**         | Geração centralizada de UUIDs versionados para evitar colisões em inserts. |
+
+---
+
+## 🏗️ Decisões Arquiteturais Estratégicas
+
+### **CockroachDB**
+- **Por que?** Resolve o problema de SPOF (Single Point of Failure) através de replicação automática
+- **Contribuição para SD**:
+  - **Consistência**: Modelo de relógio híbrido (Hybrid Logical Clocks)
+  - **Tolerância**: Sobrevive a falhas de N/2-1 nós simultâneos
+  - **Escala**: Adição transparente de novos nós ao cluster
+
+### **Redis Cluster**
+- **Por que?** Oferece cache distribuído com consistência eventual controlada
+- **Contribuição para SD**:
+  - **Performance**: Reduz latência de leituras para <10ms
+  - **Disponibilidade**: Re-sharding automático durante falhas
+  - **Consistência**: Políticas TTL-driven para invalidação de cache
+
+### **HAProxy**
+- **Por que?** Unifica o plano de controle para múltiplos serviços
+- **Contribuição para SD**:
+  - **Balanceamento**: Distribuição inteligente baseada em saúde dos nós
+  - **Observabilidade**: Métricas em tempo real via endpoint /stats
+  - **Segurança**: Rate limiting para prevenir DDoS
+
+### **RabbitMQ com Quórum**
+- **Por que?** Garante durabilidade de mensagens em cenários de crash
+- **Contribuição para SD**:
+  - **Ordenação**: Garantia de entrega FIFO dentro do mesmo canal
+  - **Durabilidade**: Replicação síncrona para ≥(N/2+1) nós
+  - **Eficiência**: Prefetching otimizado para workers paralelos
+
+### **PHP-API (Stateless)**
+- **Por que?** Permite escalonamento horizontal sem coordenação complexa
+- **Contribuição para SD**:
+  - **Elasticidade**: Pods efêmeros escaláveis sob demanda
+  - **Resiliência**: Reinicialização rápida sem perda de estado
+  - **Portabilidade**: Imagem Docker autocontida
+
+### **Nginx**
+- **Por que?** Edge router com terminação SSL e compressão eficiente
+- **Contribuição para SD**:
+  - **Caching**: Reduz carga no backend em 40% para leituras
+  - **Segurança**: WAF integrado contra injeção SQL/XSS
+  - **Protocolos**: Suporte nativo para HTTP/2 e WebSocket
+
+### **Workers Assíncronos**
+- **Por que?** Separação clara entre camada de ingestão e processamento
+- **Contribuição para SD**:
+  - **Throughput**: Paralelismo massivo via múltiplos consumidores
+  - **Isolamento**: Falhas no worker não afetam a API principal
+  - **Backpressure**: Controle de fluxo via prefetch count
+
+
+---
+
+## 🌐 Arquitetura do Sistema
+
+![Diagrama de Arquitetura](images/arquitetura_sistema.png)
+
+---
+
+## 🔄 Fluxo do Sistema
+
+![Fluxo do Sistema](images/fluxo_sistema.png)
+
+
+## 📚 Manual da API
+
+[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app/docs/index.html)
+
+Explore a API completa com testes em tempo real:
+
+- 🧪 **Testar endpoints diretamente no navegador**  
+- 📄 **Visualizar schemas de requisição/resposta**  
+- 📱 **Gerar código para 10+ linguagens automaticamente**
+
+*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app/docs/index.html)*
 
 ---
 
@@ -103,7 +199,7 @@ Este projeto requer as seguintes dependências:
 - **Gestor de Pacotes:** Composer, Npm
 - **Runtime de Contêineres:** Docker
 
-### ⚙️ Instalação
+### 🛠️ Instalação
 
 Constrói o Atividade2 a partir do código-fonte e instala as dependências:
 
@@ -164,22 +260,6 @@ npm start
 
 ---
 
-## 📚 Manual da API
-
-[![API Reference](https://img.shields.io/badge/Documentação-API%20Reference-0080ff?style=for-the-badge&logo=openapi-initiative)](https://atividade2-dictionary.netlify.app/docs/index.html)
-
-Explore a API completa com testes em tempo real:
-
-- 🧪 **Testar endpoints diretamente no navegador**  
-- 📄 **Visualizar schemas de requisição/resposta**  
-- 📱 **Gerar código para 10+ linguagens automaticamente**
-
-*Acesso: [atividade2-dictionary.netlify.app](https://atividade2-dictionary.netlify.app/docs/index.html)*
-
----
-
-## Demo do Sistema
-
 
 ## 📁 Estrutura do Projeto
 
@@ -210,10 +290,14 @@ Explore a API completa com testes em tempo real:
     ├── haproxy.cfg
     ├── images/
     ├── nginx.conf
+    ├── public/
+    │   ├── docs/
+    │   │   ├── openapi.yaml
+    │   │   ├── index.html
+    │   ├── testes-carga/
+    │       ├── relatorios
+    │       └── scripts
     ├── start.sh
-    └── testes-carga/
-        ├── relatorios
-        └── scripts
 ```
 
 ---
@@ -715,25 +799,6 @@ Explore a API completa com testes em tempo real:
         </blockquote>
     </details>
 </details>
-
----
-
-## 🌐 Arquitetura do Sistema
-
-![Diagrama de Arquitetura](images/arquitetura_sistema.png)
-
----
-
-## Fluxo do Sistema
-
-![Fluxo do Sistema](images/fluxo_sistema.png)
-
-## 🌐 Qualidades de Sistemas Distribuídos
-- **Concorrência**: Utilização de workers assíncronos com RabbitMQ para processar operações paralelas.
-- **Escalabilidade**: Cluster Redis com 6 nós e réplicas CockroachDB para distribuição horizontal.
-- **Tolerância a Falhas**: Replicação quórum em filas RabbitMQ e health checks automatizados.
-- **Consistência**: Modelo eventual com cache Redis e sincronização via workers.
-- **Coordenação**: Balanceamento de carga com HAProxy para serviços críticos.
 
 ---
 
