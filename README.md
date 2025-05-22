@@ -253,7 +253,14 @@ Pare a execução do projeto com:
  docker-compose down --remove-orphans
 ```
 
-## 🛠️ Demo de Instalação
+## 🎬 Demo de Instalação
+
+Veja abaixo uma demonstração rápida da instalação do projeto:
+
+![Prévia da Instalação](images/instalacao.gif)
+
+📥 [Clique aqui para transferir o vídeo completo (`instalacao.mp4`)](images/instalacao.mp4)
+
 
 ---
 
@@ -920,8 +927,8 @@ Pare a execução do projeto com:
 
 - Credit `contributors`, `inspiration`, `references`, etc.
 
-<div align="left"><a href="#top">⬆ Voltar</a></div>
-
 ---
 
 ## Bibliografia
+
+<div align="left"><a href="#top">⬆ Voltar</a></div>

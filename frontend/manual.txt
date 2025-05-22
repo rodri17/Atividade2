@@ -55,15 +55,18 @@ docker-compose run k6 run /testes-carga/scripts/soak-test.js
 
 
 Comando	Finalidade:
-docker-compose up -d	Inicia os containers em segundo plano.
-docker-compose logs -f	Visualiza logs em tempo real (útil para depuração).
-docker-compose down	    Para e remove containers, redes e volumes.
-docker-compose build	Reconstrói imagens após alterações em Dockerfiles.
-docker exec -it <container_id> bash	Acessa o terminal de um container em execução.
-docker-compose restart <service>	Reinicia um serviço específico (ex: backend).
+docker-compose up -d	                                            Inicia os containers em segundo plano.
+docker-compose logs -f	                                            Visualiza logs em tempo real (útil para depuração).
+docker-compose down	                                                Para e remove containers, redes e volumes.
+docker-compose build	                                            Reconstrói imagens após alterações em Dockerfiles.
+docker exec -it <container_id> bash	                                Acessa o terminal de um container em execução.
+docker-compose restart <service>	                                Reinicia um serviço específico (ex: backend).
 docker exec -it atividade2-redis-node1-1 redis-cli --cluster nodes	Lista todos os nós e seus papéis.
-docker exec -it atividade2-redis-node1-1 redis-cli GET <key>	Verifica um dado em um nó específico.
-docker-compose logs -f redis-node1	Monitora logs de um nó.
+docker exec -it atividade2-redis-node1-1 redis-cli GET <key>	    Verifica um dado em um nó específico.
+docker-compose logs -f redis-node1	                                Monitora logs de um nó.
+docker volume prune                                                 Elimina todos os volumes
+docker image prune -a                                               Elimina todas as imagens
+docker system prune -a --volumes                                    Elimina volumes e imagens
 
 Backend---------------------------------------------------------------
 
