@@ -268,7 +268,80 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 
 📥 [Clique aqui para transferir o vídeo completo (`instalacao.mp4`)](images/instalacao.mp4)
 
+---
 
+## ☁️ Implantação em Cloud (AWS/Azure/Google Cloud)
+
+### 📋 Pré-requisitos
+
+- Conta em um provedor de cloud (AWS, Azure, ou GCP)
+- CLI do provedor instalada (ex: AWS CLI, `gcloud`, `az`)
+- Docker Hub ou registo de containers do provedor (ex: AWS ECR)
+
+### ⚙️ Configuração
+
+#### 1. Construa a imagem Docker
+```sh
+docker build -t atividade2:latest .
+```
+
+#### 2. Autenticação no Registo de Containers
+
+Docker Hub:
+
+```sh
+docker login
+```
+
+AWS ECR (exemplo):
+
+```sh
+aws ecr get-login-password --region sua-regiao | docker login --username AWS --password-stdin sua-conta-id.dkr.ecr.sua-regiao.amazonaws.com
+```
+
+#### 3. Tag e Envio da Imagem
+
+```sh
+docker tag atividade2:latest seu-registo/atividade2:latest
+docker push seu-registo/atividade2:latest
+```
+
+### 🚀 Implantação
+
+AWS ECS:
+
+#### 1. Crie um cluster ECS
+
+#### 2. Defina uma task com a imagem enviada
+
+#### 3. Configure o mapeamento de porta 8000:8000
+
+Google Cloud Run:
+
+```sh
+gcloud run deploy atividade2-api --image seu-registo/atividade2:latest --port 8000 --allow-unauthenticated
+```
+
+Azure Container Instances:
+
+```sh
+az container create --resource-group seu-resource-group --name atividade2-api --image seu-registo/atividade2:latest --ports 8000
+```
+### 🔧 Configuração Adicional
+
+Configure variáveis de ambiente (se necessário):
+
+```sh
+NODE_ENV=production
+```
+
+### 🌐 Acesso à API
+
+Use o URL fornecido pelo serviço de cloud
+
+```sh
+https://atividade2-xyz.a.run.app
+```
 ---
 
 
@@ -788,7 +861,7 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 #### Sumário Executivo  
 | Teste          | VUs        | Duração | Requisições | Falhas*     | Throughput Máx. | Latência p95 (PIOR) |  
 |----------------|------------|---------|-------------|-------------|------------------|---------------------|  
-| Teste de Fumaça | 10 VUs     | 1m      | 1.160       | 0 (0%)      | 19.05 req/s      | PUT: 64.36ms        |  
+| Teste de Fumaça | 10 VUs     | 1m      | 1160       | 0 (0%)      | 19.05 req/s      | PUT: 64.36ms        |  
 | Teste de Carga  | 50 VUs    | 1m     | 4056       | 1036 (25%) | 66.26 req/s      | DELETE: 138.80ms    |  
 | Stress (PUT)    | 2.000 VUs  | 1m      | 9434       | 0 (0%)      | 126.80 req/s     | PUT: 15.07s         |  
 | Stress (Misto)  | 1.000 VUs  | 1m     | 13806      | 9205 (67%) | 204.52 req/s     | PUT: 8.04s         |  
