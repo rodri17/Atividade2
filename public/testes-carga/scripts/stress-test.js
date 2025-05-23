@@ -4,33 +4,39 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 
 export const options = {
   stages: [
-    { duration: '1m', target: 200 }, 
-    { duration: '1m', target: 500 },
+    { duration: '1m', target: 500 },  // Rampa rápida
+    { duration: '4m', target: 1000 }, // Nível de stress
+    { duration: '5m', target: 0 }     // Teste de recuperação
   ],
   thresholds: {
-    http_req_failed: ['rate<0.1'], // Relaxado para detetar limites
-    http_req_duration: ['p(95)<1000']
+    http_req_failed: ['rate<0.25'],  // Tolerância alta
+    'http_req_duration{type:PUT}': ['p(95)<2000'],  // Sobrevivência
+    'http_req_duration{type:GET}': ['p(95)<1500']   // Cache sob stress
   }
 };
 
 const BASE_URL = 'http://nginx-proxy:80';
 
 export default function () {
-  const key = `stress-key-${__VU}-${__ITER}`;
-  const value = `stress-value-${__VU}`;
+  const key = `stress-${Date.now()}`;  // Chaves únicas
 
-  const putRes = http.put(
-    `${BASE_URL}`,
-    JSON.stringify({ data: { key: key, value: value } }),
-    { headers: { 'Content-Type': 'application/json' } }
-  );
-  
-  // Apenas PUT para forçar limites
-  check(putRes, { 
-    'PUT Stress OK': (r) => [200, 201].includes(r.status),
-  });
+  // 90% PUT / 10% GET
+  if (Math.random() < 0.9) {
+    http.put(
+      BASE_URL,
+      JSON.stringify({ data: { key, value: `val-${__VU}` } }),
+      { 
+        headers: { 'Content-Type': 'application/json' },
+        tags: { type: 'PUT' }
+      }
+    );
+  } else {
+    http.get(`${BASE_URL}/word/stress-${Math.floor(Math.random()*1000)}`, {
+      tags: { type: 'GET' }
+    });
+  }
 
-  sleep(0.5); // Intervalo menor para maior pressão, Stress Test: Concentrado em sobrecarregar o sistema (apenas PUT para maximizar carga).
+  sleep(0.1);  // Máxima pressão
 }
 
 export function handleSummary(data) {

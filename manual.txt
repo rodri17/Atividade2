@@ -1,3 +1,65 @@
+CURL TESTING ---------------------------------------------------------------------------------------
+
+Erros esperados:
+
+DELETE:
+curl -X DELETE "http://localhost:8000?key=inexistente"
+# Resposta esperada: {"erro":"Palavra não encontrada"} (HTTP 404)
+
+GET:
+curl -X GET "http://localhost:8000?key=inexistente"
+# Resposta esperada: {"erro":"Palavra não encontrada"} (HTTP 404)
+
+
+Fluxo de Execução Normal:
+
+curl -X PUT http://localhost:8000/ -H "Content-Type: application/json" -d "{\"data\": {\"key\": \"exemplo\", \"value\": \"Definicao de teste\"}}"
+# Resposta esperada: {"status":"sucesso"} (HTTP 200)
+
+curl http://localhost:8000/?key=exemplo
+# Resposta esperada: {"data":{"value":"Definicao de teste"}} (HTTP 404)
+
+curl -X DELETE http://localhost:8000/?key=exemplo
+# Resposta esperada: {"status":"sucesso"} (HTTP 200)
+
+
+HEALTHCHECKS ---------------------------------------------------------------------------------------
+
+
+# Verificar status de todos os serviços no Docker
+docker ps --format "{{.Names}}: {{.Status}}"
+
+# Frontend
+curl http://localhost:3000/health
+# Resposta esperada: {"status":"ok"}
+
+# Redis Cluster (para cada nó)
+docker exec -it atividade2-redis-node1-1 redis-cli ping
+docker exec -it atividade2-redis-node2-1 redis-cli ping
+
+# RabbitMQ Cluster (cada nó)
+docker exec -it atividade2-rabbitmq1-1 rabbitmq-diagnostics check_running
+docker exec -it atividade2-rabbitmq1-1 rabbitmqctl cluster_status
+
+# PHP-API
+curl -f http://localhost:8000/health
+#Resposta esperada: Ok
+
+# Nginx
+curl -I http://localhost:8000/health
+# Resposta esperada: HTTP/1.1 200 OK
+
+# CockroachDB (cada nó)
+curl -X GET -I http://localhost:8080/health?ready=1
+curl -X GET -I http://localhost:8081/health?ready=1
+curl -X GET -I http://localhost:8082/health?ready=1
+# Resposta esperada: { } 
+
+
+
+Comandos úteis para depuração do sistema ------------------------------------------------------------------------------------------------------------
+
+
 Construir containers:
 docker-compose down
 docker-compose build --no-cache
@@ -37,6 +99,9 @@ docker network inspect atividade2_app-network
 Verificar resolução de nomes:
 docker exec atividade2-nginx-proxy-1 cat /etc/resolv.conf
 
+Verificação detalhada das bases de dados:
+docker exec -it atividade2-cockroachdb1-1 cockroach node status --insecure
+
 Aceder base de dados dentro do container e verificar conteudos da tabela:
 docker exec -it atividade2-cockroachdb1-1 cockroach sql --insecure --host=cockroachdb1 --database=distribuido_db --execute="SELECT * FROM dictionary;"
 
@@ -68,38 +133,3 @@ docker volume prune                                                 Elimina todo
 docker image prune -a                                               Elimina todas as imagens
 docker system prune -a --volumes                                    Elimina volumes e imagens
 
-Backend---------------------------------------------------------------
-
-PUT:
-curl -X PUT http://localhost:8000/ -H "Content-Type: application/json" -d "{\"data\": {\"key\": \"exemplo\", \"value\": \"Definição de teste\"}}"
-
-curl -X PUT http://localhost:8000/ -H "Content-Type: application/json" -d '{"data":{"key":"test","value":"demo"}}'
-curl http://localhost:8000/?key=test      # Should return {"data":{"value":"demo"}}
-curl -X DELETE http://localhost:8000/?key=test
-
-HealthChecks:
-# Frontend
-curl http://localhost:3000/health
-
-# Nginx
-curl http://localhost:8000/health
-
-# PostgreSQL (já configurado)
-curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health
-
-
-
-TO DO -------------------------------------------------------------
-
-Um sistema distribuído com replicação assíncrona, tolerância a falhas e resolução de conflitos simples, alinhado com o CAP Theorem (Availability + Partition Tolerance).
-
-Inclua no README:
-
-Arquitetura com shards e réplicas.
-
-Explicação de consistência eventual e last-write-wins.
-
-Passos para simular falhas e ver recuperação.
-
-Testes de Carga:
-Use locust ou k6 para testar escalabilidade e latência durante falhas.

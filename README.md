@@ -30,7 +30,7 @@
 
 ## 📄 Índice
 
-- [Demo do Sistema](#demo-do-sistema)
+- [Demo do Sistema](#-demo-do-sistema)
 - [Visão Geral](#-visão-geral)
 - [Qualidades do Sistema Distribuído](#-qualidades-do-sistema-distribuído)
 - [Decisões Arquiteturais Estratégicas](#️-decisões-arquiteturais-estratégicas)
@@ -38,21 +38,28 @@
 - [Fluxo do Sistema](#-fluxo-do-sistema)
 - [Manual da API](#-manual-da-api)
 - [Primeiros Passos](#-primeiros-passos)
-    - [Pré-requisitos](#-pré-requisitos)
+    - [Pré-requisitos](#-requisitos)
     - [Instalação](#️-instalação)
     - [Utilização](#-utilização)
-- [Demo de Instalação](#demo-de-instalação)
+- [Demo de Instalação](#-demo-de-instalação)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
     - [Índice do Projeto](#-índice-do-projeto)
 - [Testes](#-testes)
     - [Resultados e Análise](#-resultados-e-análise)
 - [Limites e Capacidades](#-limites-e-capacidades)
 - [Contribuir](#-contribuir)
-- [Agradecimentos](#-agradecimentos)
-- [Bibliografia]
+- [Bibliografia](#bibliografia)
 
 ---
 ## 🎥 Demo do Sistema
+
+**Funcionalidades Demonstradas:**
+1. Inserção de palavras com persistência em CockroachDB
+2. Recuperação via cache Redis
+3. Exclusão com verificação em tempo real
+4. Healthchecks operacionais
+
+---
 
 ## ✨ Visão Geral
 
@@ -191,12 +198,10 @@ Explore a API completa com testes em tempo real:
 
 ## 🚀 Primeiros Passos
 
-### 📋 Pré-requisitos
+### 📋 Requisitos
 
-Este projeto requer as seguintes dependências:
+Este projeto requer a seguinte dependência:
 
-- **Linguagem de Programação:** TypeScript
-- **Gestor de Pacotes:** Composer, Npm
 - **Runtime de Containers:** Docker
 
 ### ⚙️ Instalação
@@ -923,12 +928,18 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 </p>
 </details>
 
-## ✨ Agradecimentos
-
-- Credit `contributors`, `inspiration`, `references`, etc.
-
 ---
 
 ## Bibliografia
+
+### Deeepseek:
+
+- Prompt: "Providencie um conjunto de links para repositórios github com serviços úteis no desenvolvimento de sistemas distribuídos."
+- Prompt: "Gere um ambiente Docker com CockroachDB em cluster e PHP como backend acessando Redis em cluster com failover automático."
+- Prompt: "Explique a consistência serializável em CockroachDB e como ela impacta testes de carga simultâneos.
+- Prompt: "Como posso resolver o facto de certas operações PUT demorarem muito tempo a serem realizadas e GETS e DELETES dão erro 404 Not Found"
+- Prompt: "Como posso resolver que em k6 status HTTP 404 em testes de carga são esperados e não erros?"
+- Prompt: "Como configurar k6 para gerar relatórios html?"
+- Prompt: "Gere um diagrama da arquitetura dos serviços presentes em docker-compose.yml, incluindo detalhes sobre dependências e portas"
 
 <div align="left"><a href="#top">⬆ Voltar</a></div>

@@ -22,6 +22,9 @@ function connectCockroach() {
                 PDO::ATTR_TIMEOUT => 3
             ]
         );
+
+        $conn->exec("SET default_transaction_isolation TO 'READ COMMITTED'");
+        
         return $conn;
     } catch (PDOException $e) {
         throw new Exception("Conexão com CockroachDB falhou: " . $e->getMessage());

@@ -49,48 +49,65 @@ $callback = function ($msg) use ($db) {
     try {
         $data = json_decode($msg->body, true);
         $key = $data['key'];
-        
-        try {
-            $redis = new RedisCluster(null, explode(',', getenv('REDIS_NODES')), 1.5, 1.5, false);
-            
-            if ($data['event'] === 'word_updated') {
-                $redis->set($key, json_encode([
-                    'definition' => $data['value'],
-                    'timestamp' => $data['timestamp'],
-                    'node' => $data['node']
-                ]));
+        $maxRetries = 3;
+        $retryDelay = 100;
 
-                $stmt = $db->prepare("
-                    INSERT INTO dictionary (word, definition, node, version, timestamp)
-                    VALUES (?, ?, ?, ?, ?)
-                    ON CONFLICT (word) DO UPDATE SET
-                        definition = EXCLUDED.definition,
-                        node = EXCLUDED.node,
-                        version = EXCLUDED.version,
-                        timestamp = EXCLUDED.timestamp
-                ");
-                $stmt->execute([
-                    $key,
-                    $data['value'],
-                    $data['node'],
-                    bin2hex(random_bytes(4)),
-                    $data['timestamp']
-                ]);
+        for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+            try {
+                $redis = new RedisCluster(null, explode(',', getenv('REDIS_NODES')), 1.5, 1.5, false);
                 
-            } elseif ($data['event'] === 'word_deleted') {
-                $redis->del($key);
-                $db->prepare("DELETE FROM dictionary WHERE word = ?")->execute([$key]);
+                if ($data['event'] === 'word_updated') {
+                    // Atomic update com retry
+                    $db->beginTransaction();
+                    
+                    $stmt = $db->prepare("
+                        INSERT INTO dictionary (word, definition, node, version, timestamp)
+                        VALUES (?, ?, ?, ?, ?)
+                        ON CONFLICT (word) DO UPDATE SET
+                            definition = EXCLUDED.definition,
+                            node = EXCLUDED.node,
+                            version = EXCLUDED.version,
+                            timestamp = EXCLUDED.timestamp
+                    ");
+                    $stmt->execute([
+                        $key,
+                        $data['value'],
+                        $data['node'],
+                        bin2hex(random_bytes(4)),
+                        $data['timestamp']
+                    ]);
+                    
+                    $redis->set($key, json_encode([
+                        'definition' => $data['value'],
+                        'timestamp' => $data['timestamp'],
+                        'node' => $data['node']
+                    ]));
+                    
+                    $db->commit();
+                    
+                } elseif ($data['event'] === 'word_deleted') {
+                    $db->beginTransaction();
+                    $db->prepare("DELETE FROM dictionary WHERE word = ?")->execute([$key]);
+                    $redis->del($key);
+                    $db->commit();
+                }
+                
+                $msg->ack();
+                break;
+                
+            } catch (PDOException $e) {
+                $db->rollBack();
+                if (strpos($e->getMessage(), 'TransactionRetryWithProtoRefreshError') !== false && $attempt < $maxRetries) {
+                    usleep($retryDelay * 1000 * pow(2, $attempt));
+                    continue;
+                }
+                throw $e;
             }
-            
-            $msg->ack();
-            echo " [✔] Processado: $key\n";
-            
-        } catch (Exception $e) {
-            error_log("Erro ao processar mensagem: " . $e->getMessage());
-            $msg->nack(false);
         }
+        
     } catch (Exception $e) {
         error_log("Erro crítico: " . $e->getMessage());
+        $msg->nack(false);
     }
 };
 

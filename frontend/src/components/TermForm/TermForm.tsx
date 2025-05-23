@@ -32,8 +32,10 @@ const TermForm = () => {
             setMessage('success: Palavra excluída com sucesso!');
             setWord('');
             setDefinition('');
-        } catch (error) {
-            setMessage('error: Erro ao excluir a palavra.');
+        } catch (error: any) {
+            const errorMessage =
+                error.response?.data?.erro || 'Erro ao excluir a palavra.';
+            setMessage(`error: ${errorMessage}`);
         }
     };
 
