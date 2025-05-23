@@ -62,6 +62,8 @@
 3. Exclusão com verificação em tempo real
 4. Healthchecks operacionais
 
+Para ver um guia com os comandos utilizados vá a (`manual.txt`)](./manual.txt)
+
 ---
 
 ## ✨ Visão Geral
@@ -1040,5 +1042,6 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
 - Prompt: "Como posso resolver que em k6 status HTTP 404 em testes de carga são esperados e não erros?"
 - Prompt: "Providencie um índice de projeto descrevendo as funcionalidades principais de cada ficheiro"
 - Prompt: "Gere um diagrama da arquitetura dos serviços presentes em docker-compose.yml, incluindo detalhes sobre dependências e portas"
+- Prompt: "Providencie um guia passo a passo de como implementar o projeto em cloud"
 
 <div align="left"><a href="#top">⬆ Voltar</a></div>
