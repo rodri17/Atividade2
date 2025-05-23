@@ -5,7 +5,7 @@
 
 <img src="images/atividade2.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
 
-# ATIVIDADE2
+# ATIVIDADE2 - Dicionário Distribuído
 
 <em>Potencie as suas aplicações com soluções escaláveis e integradas.</em>
 <em>Construído com as seguintes ferramentas e tecnologias:</em>
