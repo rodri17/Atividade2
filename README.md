@@ -62,7 +62,7 @@
 3. Exclusão com verificação em tempo real
 4. Healthchecks operacionais
 
-Para ver um guia com os comandos utilizados vá a (`manual.txt`)](./manual.txt)
+Para ver um guia com os comandos utilizados vá a [(`manual.txt`)](./manual.txt)
 
 ---
 
