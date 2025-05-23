@@ -791,13 +791,12 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 | Teste de Fumaça | 10 VUs     | 1m      | 1.160       | 0 (0%)      | 19.05 req/s      | PUT: 64.36ms        |  
 | Teste de Carga  | 50 VUs    | 1m     | 4056       | 1036 (25%) | 66.26 req/s      | DELETE: 138.80ms    |  
 | Stress (PUT)    | 2.000 VUs  | 1m      | 9434       | 0 (0%)      | 126.80 req/s     | PUT: 15.07s         |  
-| Stress (Misto)  | 1.000 VUs  | 1m     | 13806      | 9205 (67%) | 204.52 req/s     | PUT: 15.07s         |  
+| Stress (Misto)  | 1.000 VUs  | 1m     | 13806      | 9205 (67%) | 204.52 req/s     | PUT: 8.04s         |  
 
 *Nota: "Falhas" incluem respostas 404 (não encontrado) consideradas válidas pelo sistema
 
 Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha "Real" que afetou o sistema.
 
----
 ---
 
 #### 🔥 Teste de Fumaça  
@@ -850,7 +849,9 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
 - Limitação física do ambiente local (8 CPUs) foi o principal gargalo
 
 
-📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report-put.html)  
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report-put.html)
+
+---
 
 #### 💥 Teste de Stress (Misto)  
 **Configuração**: 1.000 VUs com operações aleatórias  
@@ -861,7 +862,7 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
   - GET: 2.00s  
   - DELETE: 1.85s  
 
-**Lições**:  
+**Análise**:  
 - Sistema mantém disponibilidade contínua mesmo sob carga extrema  
 - Trade-off claro entre consistência imediata e disponibilidade  
 - Arquitetura tolerante a partições (AP) comprovada 
@@ -872,7 +873,7 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
 
 ## 📊 Limites e Capacidades  
 
-### Especificações do Ambiente de Teste
+### Especificações do Ambiente Local de Teste
 | Recurso        | Especificação        |
 |----------------|----------------------|
 | CPU            | 8 cores (Intel Xeon)|
@@ -880,29 +881,32 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
 | Armazenamento  | SSD 477GB            |
 | Rede           | 1Gbps               |
 
-### Capacidades Comprovadas
-| Métrica               | Valor                 | Cenário                |
-|-----------------------|-----------------------|------------------------|
-| Throughput Sustentado | 200 req/s             | Latência <2s (p95)     |
-| Carga Máxima          | 2.000 VUs             | Operações PUT only     |
-| Disponibilidade       | 99.99%                | Em todos cenários      |
-| Tolerância a Falhas   | N+2                   | 3 nós simultâneos      |
+### Capacidades Validadas
+| Métrica               | Valor                             | Cenário                           |
+|-----------------------|-----------------------------------|-----------------------------------|
+| Throughput Sustentado | 126 req/s                        | Operações PUT Only                |
+| Escalabilidade        | Linear até 500 req/s             | Cluster CockroachDB               |
+| Carga Máxima          | 2.000 VUs                        | Teste Focado em PUT               |
+| Disponibilidade       | 100%                             | Todos Cenários de Teste           |
+| Coordenação de Recursos | Balanceamento Automático        | HAProxy + Nginx + Redis Cluster           |
+| Tolerância a Falhas   | N+1 (3 falhas simultâneas)       | Auto-recuperação em 30s           |
+| Resiliência           | Replicação Síncrona              | RabbitMQ Quórum                   |
 
-### Limitações Identificadas
-1. **Consistência Eventual**  
-   - Latência de replicação: 150-450ms entre nós  
-   - 0.7% de conflitos em escritas paralelas após 50 VUs
+### Limitações Observadas
+1. **Latência de Replicação**  
+   - Até 450ms para consistência entre nós
+   - 0.7% de conflitos em escrita com >10 VUs
 
-2. **Gargalo de Hardware Local**   
-   - Limitação física de rede local em testes mistos
+2. **Gargalo de Recursos**  
+   - Limitação física em operações mistas ou com muitas req/s
 
-3. **Gestão de Concorrência**  
-   - Operações DELETE/GET podem preceder PUTs na fila  
-   - Necessidade de retries otimizados para cenários de alta contensão
+3. **Ordem de Operações**  
+   - DELETE/GET podem executar antes do PUT correspondente  
+   - Requer otimização de retries assíncronos
 
-4. **Escalabilidade Linear**  
-   - Redis Cluster satura em ~350 req/s por shard  
-   - CockroachDB mantém performance linear até 500 req/s
+4. **Escalabilidade Vertical**  
+   - Redis atinge ~350 req/s por shard  
+   - CockroachDB escala linear até 500 req/s
 
 ---
 
@@ -955,10 +959,12 @@ Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha
 
 - Prompt: "Providencie um conjunto de links para repositórios github com serviços úteis no desenvolvimento de sistemas distribuídos."
 - Prompt: "Gere um ambiente Docker com CockroachDB em cluster e PHP como backend acessando Redis em cluster com failover automático."
-- Prompt: "Explique a consistência serializável em CockroachDB e como ela impacta testes de carga simultâneos.
+- Prompt: "Providencie um conjunto de load balancers que eu possa utilizar para distribuir o trabalho por várias APIs, workers e DBs"
+- Prompt: "Explique a consistência eventual em CockroachDB e como ela impacta testes de carga simultâneos.
 - Prompt: "Como posso resolver o facto de certas operações PUT demorarem muito tempo a serem realizadas e GETS e DELETES dão erro 404 Not Found"
-- Prompt: "Como posso resolver que em k6 status HTTP 404 em testes de carga são esperados e não erros?"
 - Prompt: "Como configurar k6 para gerar relatórios html?"
+- Prompt: "Como posso resolver que em k6 status HTTP 404 em testes de carga são esperados e não erros?"
+- Prompt: "Providencie um índice de projeto descrevendo as funcionalidades principais de cada ficheiro"
 - Prompt: "Gere um diagrama da arquitetura dos serviços presentes em docker-compose.yml, incluindo detalhes sobre dependências e portas"
 
 <div align="left"><a href="#top">⬆ Voltar</a></div>

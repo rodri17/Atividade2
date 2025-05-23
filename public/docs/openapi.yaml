@@ -58,6 +58,8 @@ paths:
                   erro:
                     type: string
                     example: "Falha ao publicar a mensagem"
+        '405': 
+          $ref: '#/components/responses/MethodNotAllowed'
 
     get:
       summary: Obter a definição de uma palavra
@@ -92,6 +94,8 @@ paths:
                   erro:
                     type: string
                     example: "Palavra não encontrada"
+        '405': 
+          $ref: '#/components/responses/MethodNotAllowed'
 
     delete:
       summary: Excluir uma palavra
@@ -143,6 +147,8 @@ paths:
                   erro:
                     type: string
                     example: "Falha ao publicar a mensagem"
+        '405': 
+          $ref: '#/components/responses/MethodNotAllowed'
 
   /health:
     get:
@@ -168,6 +174,8 @@ paths:
                   status:
                     type: string
                     example: "degradado"
+        '405': 
+          $ref: '#/components/responses/MethodNotAllowed'
 
   # Resposta para métodos não permitidos (405) - Adicionado globalmente
 components:
