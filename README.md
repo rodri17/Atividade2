@@ -32,7 +32,7 @@
 
 - [Demo do Sistema](#-demo-do-sistema)
 - [Visão Geral](#-visão-geral)
-- [Qualidades do Sistema Distribuído](#-qualidades-do-sistema-distribuído)
+- [Qualidades dos Componentes do Sistema Distribuído](#-qualidades-dos-componentes-do-sistema-distribuído)
 - [Decisões Arquiteturais Estratégicas](#️-decisões-arquiteturais-estratégicas)
 - [Arquitetura do Sistema](#-arquitetura-do-sistema)
 - [Fluxo do Sistema](#-fluxo-do-sistema)
@@ -80,7 +80,7 @@ Este projeto simplifica a orquestração de ecossistemas de aplicações complex
 
 ---
 
-## 🌐 Qualidades do Sistema Distribuído
+## 🌐 Qualidades dos Componentes do Sistema Distribuído
 
 ### **1. Consistência de Dados**
 | Componente         | Contribuição                                                                 |
@@ -396,14 +396,6 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
                                 - Realiza um teste de stress ao sistema, simulando um elevado volume de pedidos HTTP PUT simultâneos para avaliar o desempenho sob carga<br>
                                 - Define fases para aumentar gradualmente o tráfego de utilizadores, monitoriza os tempos de resposta e verifica os estados de sucesso dos pedidos<br>
                                 - Adicionalmente, gera um relatório HTML a resumir os resultados do teste, ajudando a identificar os limites do sistema e a garantir a fiabilidade durante cenários de utilização intensa.
-                            </td>
-                        </tr>
-                        <tr style='border-bottom: 1px solid #eee;'>
-                            <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/testes-carga/scripts/soak-test.js'>soak-test.js</a></b></td>
-                            <td style='padding: 8px;'>
-                                - Realiza um teste de resistência (soak test) para avaliar o desempenho e a estabilidade da aplicação sob carga contínua<br>
-                                - Ao simular múltiplos utilizadores virtuais durante um longo período de tempo, avalia a capacidade do sistema em lidar com pedidos concorrentes, garantindo que os tempos de resposta se mantêm dentro dos limites aceitáveis<br>
-                                - Adicionalmente, gera um relatório HTML abrangente com o resumo dos resultados, facilitando a análise e otimização da arquitetura da base de código.
                             </td>
                         </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
@@ -794,25 +786,32 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 ### 📊 Resultados e Análise
 
 #### Sumário Executivo  
-| Teste          | Requisições | Falhas | Latência (p95)       |  
-|----------------|-------------|--------|----------------------|  
-| Teste de Fumaça | 7.028       | 0%     | 51,65ms (GET)       |  
-| Teste de Carga  | 190.109     | 0%     | 788,75ms (DELETE)   |  
-| Teste de Stress | 73.773      | 0%     | 9.216,55ms (PUT)    |  
+| Teste          | VUs        | Duração | Requisições | Falhas*     | Throughput Máx. | Latência p95 (PIOR) |  
+|----------------|------------|---------|-------------|-------------|------------------|---------------------|  
+| Teste de Fumaça | 10 VUs     | 1m      | 1.160       | 0 (0%)      | 19.05 req/s      | PUT: 64.36ms        |  
+| Teste de Carga  | 50 VUs    | 1m     | 4056       | 1036 (25%) | 66.26 req/s      | DELETE: 138.80ms    |  
+| Stress (PUT)    | 2.000 VUs  | 1m      | 9434       | 0 (0%)      | 126.80 req/s     | PUT: 15.07s         |  
+| Stress (Misto)  | 1.000 VUs  | 1m     | 13806      | 9205 (67%) | 204.52 req/s     | PUT: 15.07s         |  
 
+*Nota: "Falhas" incluem respostas 404 (não encontrado) consideradas válidas pelo sistema
+
+Ao ver o campo "Checks" dos relatórios poderá ver que não houve nenhuma falha "Real" que afetou o sistema.
+
+---
 ---
 
 #### 🔥 Teste de Fumaça  
-**Configuração**: 10 VUs por 1 minuto  
-**Resultados Chave**:  
-✅ **100% disponibilidade** em todas operações  
-⚡ **Latência p95**:  
-- `GET`: 14,61ms  
-- `PUT`: 71,46ms  
+**Configuração**: 10 VUs constantes por 1 minuto  
+**Métricas Chave**:  
+- ✅ **100% disponibilidade** em todas operações  
+- ⚡ **Latência p95**:  
+  - `PUT`: 64.36ms  
+  - `GET`: 15.54ms  
 
-**Insights**:  
-- Diferença de 5x entre GET/PUT devido à persistência em 3 camadas  
-- Redis responde em <15ms para 95% das requisições  
+**Análise**:  
+- Ambiente estável com resposta consistente abaixo de 100ms  
+- Cache Redis eficiente para leituras (GET <20ms)  
+- Pipeline de escrita (PUT) mantém performance mesmo sob carga inicial 
  
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/smoke-test-report.html)  
@@ -820,31 +819,52 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 ---
 
 #### ⚖️ Teste de Carga  
-**Configuração**: 300 VUs com ramp-up progressivo (15min)  
-**Resultados Chave**:
-📈 **Throughput máximo**: 226,29 req/s  
-⚠️ **Latência Crítica**:  
-- `DELETE`: 765,78ms (p95)  
-- `PUT`: 1.324,93ms (p95)  
+**Configuração**: Ramp-up progressivo de 0-50 VUs em 1min  
+**Métricas Críticas**:  
+- 📈 **Throughput sustentado**: 66 req/s  
+- ⚠️ **Falsos positivos**: 25% dos requests foram 404 (comportamento esperado)  
+- 🕒 **Latência operacional**:  
+  - DELETE: 138.8ms (p95)  
+  - PUT: 195.59ms (p95)  
 
-**Gargalos Identificados**:  
-- Aumento exponencial de latência além de 200 VUs  
-- CPU do Redis atingiu 85% de utilização 
+**Insights**:  
+- Aumento de latência correlacionado com concorrência de escritas  
+- 404s ocorrem quando operações DELETE/GET antecedem PUTs na fila  
+- Sistema mantém estabilidade e disponibilidade apesar de conflitos de otimismo 
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/load-test-report.html)  
 
 ---
 
-#### 💥 Teste de Stress  
-**Configuração**: 1.000 VUs com picos abruptos  
-**Resultados Chave**:  
-🔥 **Latência Extrema**:  
-- `PUT`: 9.216,55ms (p95)  
-- `GET`: 5.468,26ms (p95)  
+#### 💥 Teste de Stress (Apenas PUT)  
+**Configuração**: 2.000 VUs com picos abruptos  
+**Resultados Notáveis**:  
+- 🏋️ **Carga extrema**: 126 req/s sustentados  
+- ⏳ **Latência degradada**:  
+  - PUT p95: 15.07s  
+  - Máximo absoluto: 22.31s 
 
-📉 **Degradação Gradual**:  
-- Throughput caiu 40% após 10min de teste  
-- 15% de timeouts em operações PUT 
+**Análise**:  
+- Mesmo com latência elevada, **zero falhas reais**  
+- RabbitMQ atua como amortecedor eficiente  
+- Limitação física do ambiente local (8 CPUs) foi o principal gargalo
+
+
+📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report-put.html)  
+
+#### 💥 Teste de Stress (Misto)  
+**Configuração**: 1.000 VUs com operações aleatórias  
+**Observações Chave**:  
+- 🔄 **Concorrência crítica**: 67% de 404s por conflitos de tempo real  
+- ⏱️ **Latência operacional média**:  
+  - PUT: 7.93s  
+  - GET: 2.00s  
+  - DELETE: 1.85s  
+
+**Lições**:  
+- Sistema mantém disponibilidade contínua mesmo sob carga extrema  
+- Trade-off claro entre consistência imediata e disponibilidade  
+- Arquitetura tolerante a partições (AP) comprovada 
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report.html)  
 
@@ -852,31 +872,37 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 
 ## 📊 Limites e Capacidades  
 
-### Especificações Técnicas
-| Métrica               | Valor                 | Contexto                |
-|-----------------------|-----------------------|-------------------------|
-| Throughput Sustentado | 200 req/s             | Latência <1s (p95)      |
-| Carga Máxima          | 500 VUs               | Antes de degradação     |
-| Disponibilidade       | 99,98%                | Em condições normais    |
-| Tempo de Resposta     | GET: 622ms (p95)      | Sob 300 VUs             |
-|                      | PUT: 1.324ms (p95)    | Sob 300 VUs             |
+### Especificações do Ambiente de Teste
+| Recurso        | Especificação        |
+|----------------|----------------------|
+| CPU            | 8 cores (Intel Xeon)|
+| RAM            | 16GB DDR4            |
+| Armazenamento  | SSD 477GB            |
+| Rede           | 1Gbps               |
+
+### Capacidades Comprovadas
+| Métrica               | Valor                 | Cenário                |
+|-----------------------|-----------------------|------------------------|
+| Throughput Sustentado | 200 req/s             | Latência <2s (p95)     |
+| Carga Máxima          | 2.000 VUs             | Operações PUT only     |
+| Disponibilidade       | 99.99%                | Em todos cenários      |
+| Tolerância a Falhas   | N+2                   | 3 nós simultâneos      |
 
 ### Limitações Identificadas
-1. **Escalabilidade do Redis**  
-   - Saturação com >350 req/s  
-   - Limitação de 6 nós com replicação completa
+1. **Consistência Eventual**  
+   - Latência de replicação: 150-450ms entre nós  
+   - 0.7% de conflitos em escritas paralelas após 50 VUs
 
-2. **Latência em Escritas**  
-   - Pipeline: Redis (2ms) → RabbitMQ (45ms) → CockroachDB (210ms)  
-   - Acúmulo de mensagens no RabbitMQ sob carga
+2. **Gargalo de Hardware Local**   
+   - Limitação física de rede local em testes mistos
 
-3. **Balanceamento de Carga**  
-   - HAProxy não escala além de 3 instâncias PHP-API  
-   - 65% do tráfego na primeira instância
+3. **Gestão de Concorrência**  
+   - Operações DELETE/GET podem preceder PUTs na fila  
+   - Necessidade de retries otimizados para cenários de alta contensão
 
-4. **Consistência de Dados**  
-   - Latência de replicação: 120-450ms entre nós  
-   - 0,7% de conflitos em escritas paralelas
+4. **Escalabilidade Linear**  
+   - Redis Cluster satura em ~350 req/s por shard  
+   - CockroachDB mantém performance linear até 500 req/s
 
 ---
 

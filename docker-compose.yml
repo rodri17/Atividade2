@@ -380,7 +380,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]  # Porta 80 interna
+      test: ["CMD", "curl", "-f", "http://localhost/nginx-health"]  # Porta 80 interna
       interval: 10s
       timeout: 5s
       retries: 3

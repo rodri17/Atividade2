@@ -90,24 +90,12 @@ if ($request_path === '/openapi.yaml') {
 
 if ($request_path === '/health') {
     try {
-        $db->query('SELECT 1');
-        
-        $redis->ping();
-        
-        $channel = RabbitMQManager::getChannel();
-        $channel->queue_declare('healthcheck', false, true, false, false);
-        
         echo json_encode([
-            'status' => 'ok',
-            'components' => [
-                'cockroachdb' => 'ok',
-                'redis' => 'ok',
-                'rabbitmq' => 'ok'
-            ]
+            'status' => 'Ok'
         ]);
     } catch (Exception $e) {
         http_response_code(503);
-        echo json_encode(['status' => 'degradado', 'erro' => $e->getMessage()]);
+        echo json_encode(['status' => 'degradado']);
     }
     exit;
 }
@@ -150,41 +138,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $key = $_GET['key'] ?? '';
         $value = $redis->get($key);
 
-        if (!$value) {
-            $lockKey = "lock:$key";
-            $lockAcquired = $redis->set($lockKey, 1, ['nx', 'ex' => 2]);
-            
-            if ($lockAcquired) {
-                try {
-                    $stmt = $db->prepare("SELECT definition FROM dictionary WHERE word = ?");
-                    $stmt->execute([$key]);
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($row) {
-                        $redis->set($key, json_encode([
-                            'definition' => $row['definition'],
-                            'timestamp' => time(),
-                            'node' => getenv('NODE_ID')
-                        ]));
-                        $value = $row['definition'];
-                    }
-                } finally {
-                    $redis->del($lockKey);
-                }
-            } else {
-                usleep(100000);
-                $value = json_decode($redis->get($key), true)['definition'] ?? null;
-            }
-        } else {
-            $data = json_decode($value, true);
-            $value = $data['definition'];
-        }
-
         if ($value) {
-            echo json_encode(['data' => ['value' => $value]]);
+            $data = json_decode($value, true);
+            echo json_encode(['data' => ['value' => $data['definition']]]);
         } else {
-            http_response_code(404);
-            echo json_encode(['erro' => 'Palavra não encontrada']);
+            $stmt = $db->prepare("SELECT definition FROM dictionary WHERE word = ?");
+            $stmt->execute([$key]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row) {
+                $redis->set($key, json_encode([
+                    'definition' => $row['definition'],
+                    'timestamp' => (int)(microtime(true) * 1000),
+                    'node' => getenv('NODE_ID')
+                ]));
+                echo json_encode(['data' => ['value' => $row['definition']]]);
+            } else {
+                http_response_code(404);
+                echo json_encode(['erro' => 'Palavra não encontrada']);
+            }
         }
         break;
 

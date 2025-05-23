@@ -40,8 +40,24 @@ paths:
                     example: "sucesso"
         '400':
           description: Formato de requisição inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Formato de requisição inválido"
         '500':
           description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Falha ao publicar a mensagem"
 
     get:
       summary: Obter a definição de uma palavra
@@ -68,6 +84,14 @@ paths:
                         example: "Uma fruta que cresce em árvores"
         '404':
           description: Palavra não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Palavra não encontrada"
 
     delete:
       summary: Excluir uma palavra
@@ -91,8 +115,34 @@ paths:
                     example: "sucesso"
         '400':
           description: Parâmetro 'key' ausente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Parâmetro key ausente"
+        '404':
+          description: Palavra não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Palavra não encontrada"
         '500':
           description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Falha ao publicar a mensagem"
 
   /health:
     get:
@@ -108,9 +158,27 @@ paths:
                   status:
                     type: string
                     example: "ok"
-                  cockroachdb:
+        '503':
+          description: Serviço degradado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
                     type: string
-                    example: "ok"
-                  redis:
-                    type: string
-                    example: "ok"
+                    example: "degradado"
+
+  # Resposta para métodos não permitidos (405) - Adicionado globalmente
+components:
+  responses:
+    MethodNotAllowed:
+      description: Método não permitido
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              erro:
+                type: string
+                example: "Método não permitido"

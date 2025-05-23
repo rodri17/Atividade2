@@ -43,11 +43,11 @@ docker exec -it atividade2-rabbitmq1-1 rabbitmqctl cluster_status
 
 # PHP-API
 curl -f http://localhost:8000/health
-#Resposta esperada: Ok
+# Resposta esperada: {"status":"ok"}
 
 # Nginx
-curl -I http://localhost:8000/health
-# Resposta esperada: HTTP/1.1 200 OK
+curl -i http://localhost:8000/nginx-health
+# Resposta esperada: Nginx Ok (HTTP/1.1 200 OK)
 
 # CockroachDB (cada nó)
 curl -X GET -I http://localhost:8080/health?ready=1
@@ -103,7 +103,7 @@ Verificação detalhada das bases de dados:
 docker exec -it atividade2-cockroachdb1-1 cockroach node status --insecure
 
 Aceder base de dados dentro do container e verificar conteudos da tabela:
-docker exec -it atividade2-cockroachdb1-1 cockroach sql --insecure --host=cockroachdb1 --database=distribuido_db --execute="SELECT * FROM dictionary;"
+docker exec -it atividade2-cockroachdb2-1 cockroach sql --insecure --host=cockroachdb2 --database=distribuido_db --execute="SELECT * FROM dictionary;"
 
 Testar redis cache:
 docker exec -it atividade2-redis-node1-1 redis-cli GET "exemplo"
