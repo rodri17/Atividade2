@@ -136,6 +136,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'GET':
         $key = $_GET['key'] ?? '';
+        if (empty($key)) {
+            http_response_code(400);
+            echo json_encode(['erro' => 'Parâmetro key ausente']);
+            exit;
+        }
         $value = $redis->get($key);
 
         if ($value) {

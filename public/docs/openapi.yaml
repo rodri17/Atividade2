@@ -84,6 +84,16 @@ paths:
                       value:
                         type: string
                         example: "Uma fruta que cresce em árvores"
+        '400':
+          description: Parâmetro 'key' ausente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  erro:
+                    type: string
+                    example: "Parâmetro key ausente"
         '404':
           description: Palavra não encontrada
           content:
