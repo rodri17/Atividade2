@@ -53,6 +53,8 @@
 ---
 ## 🎥 Demo do Sistema
 
+📥 [Clique aqui para transferir o vídeo completo do demo do sistema (`demo_sistema.mp4`)](images/demo_sistema.mp4)
+
 **Funcionalidades Demonstradas:**
 1. Inserção de palavras com persistência em CockroachDB
 2. Recuperação via cache Redis
@@ -290,7 +292,6 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
     ├── frontend/
     │   ├── Dockerfile
     │   ├── README.md
-    │   ├── manual.txt
     │   ├── package-lock.json
     │   ├── package.json
     │   ├── public/
@@ -298,6 +299,7 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
     │   └── tsconfig.json
     ├── haproxy.cfg
     ├── images/
+    ├── manual.txt
     ├── nginx.conf
     ├── public/
     │   ├── docs/
@@ -358,21 +360,29 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
                         - Adicionalmente, fornece uma interface de estatísticas com informações de desempenho em tempo real, contribuindo para a fiabilidade e escalabilidade da arquitetura da aplicação.
                     </td>
                 </tr>
+                <tr style='border-bottom: 1px solid #eee;'>
+                    <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/manual.txt'>manual.txt</a></b></td>
+                    <td style='padding: 8px;'>
+                        - Fornece instruções essenciais para configurar e gerir um sistema distribuído utilizando Docker<br>
+                        - Descreve os passos para construir os contentores, configurar os vários clusters e verificar a sua saúde e conectividade<br>
+                        - Adicionalmente, inclui comandos para monitorização de *logs* e execução de testes de carga, assegurando a escalabilidade e resiliência do sistema, em conformidade com a arquitetura do projeto focada na disponibilidade e tolerância a partições.
+                    </td>
+                </tr>
             </table>
         </blockquote>
     </details>
     <!-- testes-carga Submodule -->
     <details>
-        <summary><b>testes-carga</b></summary>
+        <summary><b>public/testes-carga</b></summary>
         <blockquote>
             <div class='directory-path' style='padding: 8px 0; color: #666;'>
-                <code><b>⦿ testes-carga</b></code>
+                <code><b>⦿ public/testes-carga</b></code>
             <!-- scripts Submodule -->
             <details>
                 <summary><b>scripts</b></summary>
                 <blockquote>
                     <div class='directory-path' style='padding: 8px 0; color: #666;'>
-                        <code><b>⦿ testes-carga.scripts</b></code>
+                        <code><b>⦿ public.testes-carga.scripts</b></code>
                     <table style='width: 100%; border-collapse: collapse;'>
                     <thead>
                         <tr style='background-color: #f8f9fa;'>
@@ -581,14 +591,6 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
                         - Ao estabelecer um diretório de trabalho, copiar os ficheiros de configuração e expor a porta adequada, garante um processo de desenvolvimento simplificado, permitindo aos programadores focarem-se na implementação de funcionalidades e na melhoria da experiência do utilizador dentro da arquitetura global do projeto.
                     </td>
                 </tr>
-                <tr style='border-bottom: 1px solid #eee;'>
-                    <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/manual.txt'>manual.txt</a></b></td>
-                    <td style='padding: 8px;'>
-                        - Fornece instruções essenciais para configurar e gerir um sistema distribuído utilizando Docker e Redis<br>
-                        - Descreve os passos para construir os contentores, configurar um cluster Redis e verificar a sua saúde e conectividade<br>
-                        - Adicionalmente, inclui comandos para monitorização de *logs* e execução de testes de carga, assegurando a escalabilidade e resiliência do sistema, em conformidade com a arquitetura do projeto focada na disponibilidade e tolerância a partições.
-                    </td>
-                </tr>
             </table>
             <!-- src Submodule -->
             <details>
@@ -603,14 +605,6 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
                             <th style='text-align: left; padding: 8px;'>Sumário</th>
                         </tr>
                     </thead>
-                        <tr style='border-bottom: 1px solid #eee;'>
-                            <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/src/setupTests.ts'>setupTests.ts</a></b></td>
-                            <td style='padding: 8px;'>
-                                - Melhora as capacidades de teste ao integrar *matchers* personalizados do Jest especificamente desenhados para asserções em nós DOM<br>
-                                - Esta configuração facilita testes mais intuitivos e legíveis dentro da base de código do frontend, permitindo aos programadores verificar eficazmente os componentes da interface de utilizador<br>
-                                - Ao tirar partido destes *matchers*, o projeto assegura um ambiente de testes robusto que contribui para a manutenção de interfaces de alta qualidade ao longo do ciclo de desenvolvimento.
-                            </td>
-                        </tr>
                         <tr style='border-bottom: 1px solid #eee;'>
                             <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/src/react-app-env.d.ts'>react-app-env.d.ts</a></b></td>
                             <td style='padding: 8px;'>
@@ -641,22 +635,6 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
                                 - Facilita a comunicação com a API ao configurar um middleware proxy que direciona pedidos do frontend para uma API backend em PHP<br>
                                 - Esta configuração assegura uma interação sem falhas entre cliente e servidor, fornecendo também um endpoint de verificação de saúde para monitorizar o estado da aplicação<br>
                                 - No geral, melhora a arquitetura ao simplificar o fluxo de dados e aumentar a fiabilidade no ambiente de desenvolvimento.
-                            </td>
-                        </tr>
-                        <tr style='border-bottom: 1px solid #eee;'>
-                            <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/src/App.test.tsx'>App.test.tsx</a></b></td>
-                            <td style='padding: 8px;'>
-                                - Facilita o teste do componente principal da aplicação, garantindo que elementos essenciais são renderizados corretamente na interface de utilizador<br>
-                                - Ao verificar a presença de texto chave, contribui para manter a qualidade e fiabilidade geral da base de código frontend, melhorando a experiência do utilizador e a confiança na funcionalidade da aplicação<br>
-                                - Esta abordagem de teste suporta práticas de integração e desenvolvimento contínuos dentro do projeto.
-                            </td>
-                        </tr>
-                        <tr style='border-bottom: 1px solid #eee;'>
-                            <td style='padding: 8px;'><b><a href='https://github.com/a75739/Atividade2/blob/master/frontend/src/reportWebVitals.ts'>reportWebVitals.ts</a></b></td>
-                            <td style='padding: 8px;'>
-                                - Facilita a medição e reporte de métricas de desempenho web dentro da aplicação<br>
-                                - Ao tirar partido da biblioteca web-vitals, captura indicadores essenciais de desempenho como Cumulative Layout Shift, First Input Delay, First Contentful Paint, Largest Contentful Paint e Time to First Byte<br>
-                                - Esta funcionalidade melhora a experiência do utilizador ao fornecer perceções sobre o desempenho da aplicação, permitindo otimizações informadas em toda a base de código.
                             </td>
                         </tr>
                     </table>
