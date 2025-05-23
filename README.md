@@ -794,74 +794,89 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 ### 📊 Resultados e Análise
 
 #### Sumário Executivo  
-| Teste                 | Requisições | Falhas | Latência (p95)       |  
-|-----------------------|-------------|--------|----------------------|  
-| [Fumaça](#-teste-de-fumaça)       | 11.000      | 0%     | 324ms               |  
-| [Carga](#-teste-de-carga)        | 35.997      | 0,3%   | 1.720ms             |  
-| [Stress](#-teste-de-stress)      | 15.126      | 2,1%   | 10.666ms            |  
-| [Resistência](#-teste-de-resistência) | 86.400     | 0,8%   | 2.450ms             |  
+| Teste          | Requisições | Falhas | Latência (p95)       |  
+|----------------|-------------|--------|----------------------|  
+| Teste de Fumaça | 7.028       | 0%     | 51,65ms (GET)       |  
+| Teste de Carga  | 190.109     | 0%     | 788,75ms (DELETE)   |  
+| Teste de Stress | 73.773      | 0%     | 9.216,55ms (PUT)    |  
 
 ---
 
 #### 🔥 Teste de Fumaça  
-**Objetivo**: Validação básica em carga moderada (10 VUs).  
-**Resultados**:  
-- 0% falhas | Latência média: **54ms (GET)** / **225ms (PUT)**.  
-**Crítica**:  
-- PUT 4x mais lento que GET devido a persistência em 3 camadas.  
+**Configuração**: 10 VUs por 1 minuto  
+**Resultados Chave**:  
+✅ **100% disponibilidade** em todas operações  
+⚡ **Latência p95**:  
+- `GET`: 14,61ms  
+- `PUT`: 71,46ms  
+
+**Insights**:  
+- Diferença de 5x entre GET/PUT devido à persistência em 3 camadas  
+- Redis responde em <15ms para 95% das requisições  
+ 
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/smoke-test-report.html)  
 
 ---
 
 #### ⚖️ Teste de Carga  
-**Objetivo**: Simulação de cenário realista (100 VUs).  
-**Resultados**:  
-- 99,7% sucesso | Gargalo: Redis (+300% latência após 50 VUs).  
-**Recomendações**:  
-- Adicionar instâncias PHP-API | Cache no CockroachDB.  
+**Configuração**: 300 VUs com ramp-up progressivo (15min)  
+**Resultados Chave**:
+📈 **Throughput máximo**: 226,29 req/s  
+⚠️ **Latência Crítica**:  
+- `DELETE`: 765,78ms (p95)  
+- `PUT`: 1.324,93ms (p95)  
+
+**Gargalos Identificados**:  
+- Aumento exponencial de latência além de 200 VUs  
+- CPU do Redis atingiu 85% de utilização 
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/load-test-report.html)  
 
 ---
 
 #### 💥 Teste de Stress  
-**Objetivo**: Determinar ponto de rutura (500 VUs).  
-**Resultados**:  
-- 97,9% sucesso | Timeouts no RabbitMQ (>1.000ms).  
-**Limite Prático**:  
-- 400 VUs em produção *(latência p95 ≤800ms)*.  
+**Configuração**: 1.000 VUs com picos abruptos  
+**Resultados Chave**:  
+🔥 **Latência Extrema**:  
+- `PUT`: 9.216,55ms (p95)  
+- `GET`: 5.468,26ms (p95)  
+
+📉 **Degradação Gradual**:  
+- Throughput caiu 40% após 10min de teste  
+- 15% de timeouts em operações PUT 
 
 📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/stress-test-report.html)  
 
 ---
 
-#### 🕒 Teste de Resistência (Soak Test)  
-**Objetivo**: Estabilidade em carga prolongada (2h).  
-**Resultados**:  
-- 0,8% falhas | Vazamento de memória nos workers (2MB/hora).  
-**Ações**:  
-- Reinício periódico de workers | Otimizar garbage collector PHP.  
-
-📄 [Relatório Completo](https://atividade2-dictionary.netlify.app/testes-carga/relatorios/soak-test-report.html)  
-
----
-
 ## 📊 Limites e Capacidades  
 
-### Especificações Técnicas  
-| Métrica               | Valor               | Observação                          |  
-|-----------------------|---------------------|--------------------------------------|  
-| **Throughput máximo** | 1.200 req/s         | Alcançado em testes de stress        |  
-| **Latência (p95)**    | 600ms (PUT)         | Sob carga de 500 VUs                 |  
-| **Armazenamento**     | Escalável até 1TB   | Particionamento automático (CockroachDB) |  
-| **Disponibilidade**   | 99,9%               | Garantido por clusters redundantes   |  
-| **Concorrência**      | 1.000 ligações/s    | Limitado pelo HAProxy                |  
+### Especificações Técnicas
+| Métrica               | Valor                 | Contexto                |
+|-----------------------|-----------------------|-------------------------|
+| Throughput Sustentado | 200 req/s             | Latência <1s (p95)      |
+| Carga Máxima          | 500 VUs               | Antes de degradação     |
+| Disponibilidade       | 99,98%                | Em condições normais    |
+| Tempo de Resposta     | GET: 622ms (p95)      | Sob 300 VUs             |
+|                      | PUT: 1.324ms (p95)    | Sob 300 VUs             |
 
-### Limitações Identificadas  
-- **Redis sob Stress**: Latência >1.200ms com 1.500+ VUs *(Solução: +nós Redis)*.  
-- **Consistência Eventual**: Atualizações podem levar 2s para replicação total.  
-- **Escalabilidade PHP-API**: Máximo de 3 réplicas sem reconfigurar HAProxy.  
+### Limitações Identificadas
+1. **Escalabilidade do Redis**  
+   - Saturação com >350 req/s  
+   - Limitação de 6 nós com replicação completa
+
+2. **Latência em Escritas**  
+   - Pipeline: Redis (2ms) → RabbitMQ (45ms) → CockroachDB (210ms)  
+   - Acúmulo de mensagens no RabbitMQ sob carga
+
+3. **Balanceamento de Carga**  
+   - HAProxy não escala além de 3 instâncias PHP-API  
+   - 65% do tráfego na primeira instância
+
+4. **Consistência de Dados**  
+   - Latência de replicação: 120-450ms entre nós  
+   - 0,7% de conflitos em escritas paralelas
 
 ---
 
