@@ -42,6 +42,7 @@
     - [Instalação](#️-instalação)
     - [Utilização](#-utilização)
 - [Demo de Instalação](#-demo-de-instalação)
+- [Implementação em Cloud](#️-implementação-em-cloud-awsazuregoogle-cloud)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
     - [Índice do Projeto](#-índice-do-projeto)
 - [Testes](#-testes)
@@ -270,7 +271,7 @@ Veja abaixo uma demonstração rápida da instalação do projeto:
 
 ---
 
-## ☁️ Implantação em Cloud (AWS/Azure/Google Cloud)
+## ☁️ Implementação em Cloud (AWS/Azure/Google Cloud)
 
 ### 📋 Pré-requisitos
 
@@ -306,7 +307,7 @@ docker tag atividade2:latest seu-registo/atividade2:latest
 docker push seu-registo/atividade2:latest
 ```
 
-### 🚀 Implantação
+### 🚀 Implementação
 
 AWS ECS:
 
