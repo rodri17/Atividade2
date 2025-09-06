@@ -1,0 +1,58 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+      cockroachdb:
+        image: cockroachdb/cockroach:v24.1.0
+        ports:
+          - 26257:26257
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: redis, pdo_pgsql
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        run: composer install --working-dir=./backend
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix ./frontend
+
+      - name: Build frontend
+        run: npm run build --prefix ./frontend
+
+      - name: Run backend tests
+        run: vendor/bin/phpunit --configuration ./backend/phpunit.xml
+
+      - name: Run frontend tests
+        run: npm test --prefix ./frontend -- --watchAll=false
+
+      - name: Build Docker images
+        run: docker-compose -f docker-compose.yml build
