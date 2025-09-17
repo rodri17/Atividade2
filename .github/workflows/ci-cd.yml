@@ -52,4 +52,4 @@ jobs:
         run: npm test --prefix ./frontend -- --watchAll=false --passWithNoTests
 
       - name: Build Docker images
-        run: docker-compose -f docker-compose.yml build
+        run: docker compose -f docker-compose.yml build
