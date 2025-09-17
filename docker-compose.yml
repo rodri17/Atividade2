@@ -175,6 +175,7 @@ services:
 
   php-api:
     build: ./backend
+    image: ghcr.io/rodri17/atividade2-php-api:latest
     environment:
       - NODE_ID=php-api
       - REDIS_NODES=redis-node1:6379,redis-node2:6379,redis-node3:6379,redis-node4:6379,redis-node5:6379,redis-node6:6379
@@ -324,6 +325,7 @@ services:
 
   worker:
     build: ./backend
+    image: ghcr.io/rodri17/atividade2-worker:latest
     command: bash -c "sleep 15 && php worker/worker.php"
     networks:
       - app-network
@@ -351,6 +353,7 @@ services:
 
   frontend:
     build: ./frontend
+    image: ghcr.io/rodri17/atividade2-frontend:latest
     ports:
       - "3000:3000"
     environment:
