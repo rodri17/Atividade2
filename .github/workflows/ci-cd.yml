@@ -53,3 +53,10 @@ jobs:
 
       - name: Build Docker images
         run: docker compose -f docker-compose.yml build
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" |
+             docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Docker images to GHCR
+        run: docker compose -f docker-compose.yml push
