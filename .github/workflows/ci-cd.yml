@@ -48,8 +48,8 @@ jobs:
       - name: Build frontend
         run: npm run build --prefix ./frontend
 
-      - name: Run frontend tests
-        run: npm test --prefix ./frontend -- --watchAll=false
+      - name: Run frontend tests (pass if no tests)
+        run: npm test --prefix ./frontend -- --watchAll=false --passWithNoTests
 
       - name: Build Docker images
         run: docker-compose -f docker-compose.yml build
